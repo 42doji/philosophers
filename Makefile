@@ -1,5 +1,5 @@
 CC = cc -g
-INCLUDES = -Ilibft -I.
+INCLUDES = -Ilibft -Iphilosophers -I.
 CFLAGS = -Wall -Wextra -Werror
 LDFLAGS = -L. -lft -lpthread
 LIBFT = libft.a
