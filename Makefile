@@ -1,38 +1,39 @@
-CC = cc -g
-INCLUDES = -Ilibft -Iphilosophers -I.
+CC = cc
 CFLAGS = -Wall -Wextra -Werror
-LDFLAGS = -L. -lft -lpthread
+INCLUDES = -Ilibft -Iphilosophers -Ift_printf -I.
+LDFLAGS = -L. -lft -lpthread -lftprintf
 LIBFT = libft.a
+FTPRINTF = libftprintf.a
 NAME = philo
-SRCS = main.c 
+SRCS = main.c
 OBJS = $(SRCS:.c=.o)
-
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(INCLUDES) $(OBJS) $(LDFLAGS ) -o $(NAME)
+$(NAME): $(OBJS) $(LIBFT) $(FTPRINTF)
+	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LDFLAGS) -o $(NAME)
 
-$(OBJS): $(SRCS)
-	$(CC) -c $(SRCS)
+%.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(LIBFT):
-	cd libft/ && make
-	@if [ -f libft/libft.a ]; then cp libft/libft.a .; fi
+	cd libft && $(MAKE)
+	@if [ -f libft/$(LIBFT) ]; then cp libft/$(LIBFT) .; fi
+
+$(FTPRINTF):
+	cd ft_printf && $(MAKE)
+	@if [ -f ft_printf/$(FTPRINTF) ]; then cp ft_printf/$(FTPRINTF) .; fi
 
 clean:
 	-rm -f $(OBJS)
-	-cd libft/ && make clean
+	$(MAKE) -C libft clean
+	$(MAKE) -C ft_printf clean
 
 fclean: clean
 	-rm -f $(NAME)
 	-rm -f $(LIBFT)
+	-rm -f $(FTPRINTF)
 
-re: 
-	make fclean
-	make all
+re: fclean all
 
-.PHONY:
-	all clean fclean re
-
-
+.PHONY: all clean fclean re
