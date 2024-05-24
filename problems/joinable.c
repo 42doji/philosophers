@@ -1,4 +1,4 @@
-#include "philosophers.h"
+#include "../philosophers.h"
 
 void	print_message(void *ptr)
 {

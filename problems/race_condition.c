@@ -1,4 +1,4 @@
-#include "philosophers.h"
+#include "../philosophers.h"
 
 void	clean_forks(pthread_mutex_t **forks, ssize_t n)
 {
