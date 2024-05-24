@@ -1,8 +1,6 @@
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
-#include <limits.h>
-#include <stdbool.h>
 #include <stdlib.h>
 #include <pthread.h>
 #include <unistd.h>
