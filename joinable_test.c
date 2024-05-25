@@ -5,6 +5,7 @@
 
 pthread_mutex_t lock;
 int counter;
+pthread_attr_t attr;
 
 void *increment(void *arg)
 {
@@ -32,9 +33,7 @@ void *increment(void *arg)
 
 void	create_threads(pthread_t *thread_handle, int thread_id)
 {
-	pthread_attr_t	attr;
 	int *_thread_id;
-
 	_thread_id = malloc(sizeof(int));
 	*_thread_id =thread_id;
 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
@@ -46,7 +45,6 @@ int main(int argc, char *argv[])
 {
 	void *res1, *res2;
 	pthread_t thread1, thread2;
-	pthread_attr_t attr;
 
 	counter = 0;
 	pthread_mutex_init(&lock, NULL);
@@ -63,6 +61,9 @@ int main(int argc, char *argv[])
 	{
 		printf("res2: %d\n",*(int *)res2);
 	}
-
+	pthread_attr_destroy(&attr);
+	pthread_mutex_destroy(&lock);
+	free(res1);
+	free(res2);
 	return (0);
 }
