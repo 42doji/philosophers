@@ -15,9 +15,8 @@ int main(int argc, char *argv[])
 	// argv[2] = 철학자가 식사를 먹는데 걸리는 시간
 	// argv[3] = 철학자가 잠자는데 걸리는 시간
 	// argv[4] = 철학자가 식사하는 횟수
-	if (argc != 4 || argc != 5)
+	if (argc < 5 || argc > 6)
 		return (1);
-
 	pthread_t 		thread;
 	pthread_attr_t 	attr;
 	pthread_mutex_t *fork;

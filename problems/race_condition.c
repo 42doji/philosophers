@@ -73,7 +73,7 @@ int	main(int argc, char *argv[])
 	fork = create_fork();
 	if (!fork)
 	{
-		printf("Error: create_fork() failed.\n");
+		ft_printf("Error: create_fork() failed.\n");
 		free(fork);
 		return (1);
 	}
