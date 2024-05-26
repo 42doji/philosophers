@@ -119,6 +119,48 @@ t_fork	*get_left_fork(t_philo *philosopher, t_fork **forks)
 	return (forks[philosopher->philo_id - 1]);
 }
 
+void	release_forks(t_philo *philosopher, t_fork **forks, t_table *rules)
+{
+	t_fork	*left_fork;
+	t_fork	*right_fork;
+
+	left_fork = get_left_fork(philosopher, forks);
+	right_fork = get_right_fork(philosopher, forks, rules);
+	/* TODO: */
+}
+
+int get_access_forks(t_philo *philosopher, t_fork **forks, t_table *rules)
+{
+	t_fork	*left_fork;
+	t_fork	*right_fork;
+
+	left_fork = get_left_fork(philosopher, forks);
+	right_fork = get_right_fork(philosopher, forks, rules);
+	/* TODO: */
+	return (1);
+}
+
+void	eat(t_philo *philosopher, t_fork **forks, t_table *rules)
+{
+	t_fork	*left_fork;
+	t_fork	*right_fork;
+
+	left_fork = get_left_fork(philosopher, forks);
+	right_fork = get_right_fork(philosopher, forks, rules);
+	if (left_fork->is_used && right_fork->is_used)
+		return ;
+	if (left_fork->owner == philosopher && right_fork->owner == philosopher)
+		return ;
+	/* TODO: */
+	pthread_mutex_lock(&left_fork->mtx);
+	pthread_mutex_lock(&right_fork->mtx);
+	philosopher->eat_count++;
+	pthread_mutex_unlock(&left_fork->mtx);
+	pthread_mutex_unlock(&right_fork->mtx);
+	sleep(rules->time_to_eat);
+	/* TODO: */
+}
+
 int main(int argc, char *argv[])
 {
 	static t_philo			**philosophers;
