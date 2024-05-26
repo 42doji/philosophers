@@ -108,15 +108,15 @@ void	create_forks(int n, t_fork **forks)
 
 t_fork	*get_right_fork(t_philo *philosopher, t_fork **forks, t_table *rules)
 {
-	if (philosopher->philo_id == 0)
+	if (philosopher->philo_id == 1)
 		return (forks[rules->num_philosophers - 1]);
 	else
-		return (forks[philosopher->philo_id - 1]);
+		return (forks[philosopher->philo_id - 2]);
 }
 
 t_fork	*get_left_fork(t_philo *philosopher, t_fork **forks)
 {
-	return (forks[philosopher->philo_id]);
+	return (forks[philosopher->philo_id - 1]);
 }
 
 int main(int argc, char *argv[])
