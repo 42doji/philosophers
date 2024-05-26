@@ -27,7 +27,7 @@ typedef struct	spoon
 	pthread_cond_t ev;
 }	t_fork;
 
-typedef struct	s_table_rules
+typedef struct	s_table
 {
 	int num_philosophers;
 	int num_forks;
@@ -35,6 +35,6 @@ typedef struct	s_table_rules
 	int time_to_eat;
 	int time_to_sleep;
 	int num_times_to_eat;
-}	t_table_rules;
+}	t_table;
 
 #endif
