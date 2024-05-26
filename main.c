@@ -36,7 +36,7 @@ void	*philo_callback(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	ft_printf("Philosopher %d is alive\n", philo->philo_id);
+	/* TODO: */
 	return (NULL);
 }
 
