@@ -18,7 +18,7 @@ typedef struct	s_philosopher
 	pthread_attr_t	*thread_attr;
 }	t_philo;
 
-typedef struct	spoon
+typedef struct	s_fork
 {
 	int spoon_id;
 	int is_used;

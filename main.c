@@ -40,14 +40,14 @@ void	*philo_callback(void *arg)
 	return (NULL);
 }
 
-t_philo	**create_philosophers(t_table *rules, pthread_attr_t *attr)
+void	create_philosophers(t_table *rules, pthread_attr_t *attr)
 {
 	t_philo	**philosophers;
 	int		i;
 
 	philosophers = malloc(sizeof(t_philo *) * rules->num_philosophers);
 	if (!philosophers)
-		return (NULL);
+		return ;
 	i = 0;
 	while (i < rules->num_philosophers)
 	{
@@ -55,14 +55,13 @@ t_philo	**create_philosophers(t_table *rules, pthread_attr_t *attr)
 		if (!philosophers[i])
 		{
 			free_philosophers(philosophers, i);
-			return (NULL);
+			return ;
 		}
 		philosophers[i]->philo_id = i + 1;
 		philosophers[i]->eat_count = 0;
-		pthread_create(philosophers[i]->thread_handle, NULL, philo_callback, philosophers[i]);
+		pthread_create(philosophers[i]->thread_handle, attr, philo_callback, philosophers[i]);
 		i++;
 	}
-	return (philosophers);
 }
 
 void	free_forks(t_fork **forks, int i)
@@ -82,14 +81,13 @@ void	free_forks(t_fork **forks, int i)
 	free(forks);
 }
 
-t_fork	**create_forks(int n)
+void	create_forks(int n, t_fork **forks)
 {
-	t_fork	**forks;
 	int		i;
 
 	forks = malloc(sizeof(t_fork *) * n);
 	if (!forks)
-		return (NULL);
+		return ;
 	i = 0;
 	while (i < n)
 	{
@@ -97,7 +95,7 @@ t_fork	**create_forks(int n)
 		if (!forks[i])
 		{
 			free_forks(forks, i);
-			return (NULL);
+			return ;
 		}
 		forks[i]->spoon_id = i + 1;
 		forks[i]->is_used = 0;
@@ -106,13 +104,12 @@ t_fork	**create_forks(int n)
 		pthread_cond_init(&forks[i]->ev, NULL);
 		i++;
 	}
-	return (forks);
 }
 
 int main(int argc, char *argv[])
 {
-	t_philo			**philosophers;
-	t_fork			**forks;
+	static t_philo			**philosophers;
+	static t_fork			**forks;
 	t_table 		rules;
 	pthread_attr_t	attr;
 
@@ -120,13 +117,13 @@ int main(int argc, char *argv[])
 		return (1);
 	if(!init_table(&rules, argc, argv))
 		return (1);
-	forks = create_forks(rules.num_forks);
+	create_forks(rules.num_forks ,forks);
 	if (!forks)
 		return (1);
-	philosophers = create_philosophers(&rules, &attr);
+	create_philosophers(&rules, &attr);
 	if (!philosophers)
 		return (1);
-
 	free_forks(forks, rules.num_forks - 1);
+	free_philosophers(philosophers, rules.num_philosophers - 1);
 	return (0);
 }
