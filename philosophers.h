@@ -9,25 +9,39 @@
 # include "ft_printf/ft_printf.h"
 
 typedef pthread_mutex_t t_mtx;
+typedef struct	s_fork t_fork;
+typedef struct	s_philosopher t_philo;
+typedef struct	s_table t_table;
+typedef enum e_state t_state;
+
+typedef enum e_state
+{
+	DEAD,
+	EATING,
+	SLEEPING,
+	THINKING,
+} t_state;
 
 typedef struct	s_philosopher
 {
 	int				philo_id;
 	int				eat_count;
+	t_state			state;
 	pthread_t		*thread_handle;
 	pthread_attr_t	*thread_attr;
+	t_fork			*left_fork;
+	t_fork			*right_fork;
 }	t_philo;
 
 typedef struct	s_fork
 {
-	int spoon_id;
+	int fork_id;
 	int is_used;
 	t_philo *owner;
 	t_mtx mtx;
-	pthread_cond_t ev;
 }	t_fork;
 
-typedef struct	s_table
+typedef struct	s_table_data
 {
 	int num_philosophers;
 	int num_forks;
@@ -35,6 +49,8 @@ typedef struct	s_table
 	int time_to_eat;
 	int time_to_sleep;
 	int num_times_to_eat;
-}	t_table;
+	t_philo *philosophers;
+	t_fork *forks;
+}	t_table_data;
 
 #endif

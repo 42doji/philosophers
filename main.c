@@ -126,7 +126,7 @@ void	release_forks(t_philo *philosopher, t_fork **forks, t_table *rules)
 
 	left_fork = get_left_fork(philosopher, forks);
 	right_fork = get_right_fork(philosopher, forks, rules);
-	/* TODO: */
+
 }
 
 int get_access_forks(t_philo *philosopher, t_fork **forks, t_table *rules)
@@ -163,8 +163,8 @@ void	eat(t_philo *philosopher, t_fork **forks, t_table *rules)
 
 int main(int argc, char *argv[])
 {
-	static t_philo			**philosophers;
-	static t_fork			**forks;
+	static t_philo			*philosophers;
+	static t_fork			*forks;
 	t_table 		rules;
 	pthread_attr_t	attr;
 
