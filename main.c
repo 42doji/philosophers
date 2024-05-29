@@ -168,6 +168,8 @@ int main(int argc, char *argv[])
 	t_table 		rules;
 	pthread_attr_t	attr;
 
+	pthread_mutex_t
+	pthead_join(philosophers->thread_handle, NULL);
 	if (argc < 5 || argc > 6)
 		return (1);
 	if(!init_table(&rules, argc, argv))
