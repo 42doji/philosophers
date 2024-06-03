@@ -30,7 +30,6 @@ int init_philos(t_data *data)
 		data->philosophers[i].data = data;
 		if (pthread_mutex_init(&data->philosophers[i].meal_mutex, NULL))
 			return (free_mutexes(data, i - 1));
-		printf("philo: %d init_philos\n", i);
 		i++;
 	}
 	return (1);
@@ -49,7 +48,6 @@ void	clean_philos(t_data *data)
 		data->philosophers[i].second_fork = NULL;
 		data->philosophers[i].state = INACTIVE;
 		pthread_mutex_destroy(&data->philosophers[i].meal_mutex);
-		printf("philo: %d clean_philos\n", i);
 		i++;
 	}
 	free(data->philosophers);

@@ -1,5 +1,20 @@
 #include "../inc/philosophers.h"
 
+void	check_process_status(t_philo *philo)
+{
+	int i;
+
+	i = 0;
+	while (i < philo->data->philo_count)
+	{
+		if (philo->state == INACTIVE)
+			printf("philo: %d is inactive\n", philo->data->philosophers[i].id);
+		i++;
+	}
+	if (i == philo->data->philo_count)
+		printf("all philosophers are ready\n");
+}
+
 int	parser(int argc, char *argv[], t_data *data)
 {
 	if (argc < 5 || argc > 6)
@@ -21,20 +36,6 @@ int	parser(int argc, char *argv[], t_data *data)
 	else
 		printf("meal_count: 0\n");
 	return (1);
-}
-
-void	check_process_status(t_philo *philo)
-{
-	int i;
-
-	i = 0;
-	while (i < philo->data->philo_count)
-	{
-		printf("philo: %d is %d\n", philo->id, philo->state);
-		i++;
-	}
-	if (i == philo->data->philo_count)
-		printf("all philosophers are ready\n");
 }
 
 int main(int argc, char *argv[])
