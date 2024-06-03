@@ -14,7 +14,12 @@ int	parser(int argc, char *argv[], t_data *data)
 	printf("time_to_sleep: %d\n", data->time_to_sleep);
 	data->meal_count = -1;
 	if (argc == 6)
+	{
 		data->meal_count = ft_atoi(argv[5]);
+		printf("meal_count: %d\n", data->meal_count);
+	}
+	else
+		printf("meal_count: 0\n");
 	return (1);
 }
 
