@@ -85,9 +85,8 @@ void			free_forks(t_data *data, int i);
 
 /* time utils */
 long			get_time(void);
-
-void test_time(void);
-
+void 			test_time(void);
+void			test_eat(t_philo *philo);
 /* time utils */
 
 #endif

@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
 		return (1);
 	check_process_status(data.philosophers);
 	printf("%ld\n", get_time());
-	test_time();
+	test_eat(data.philosophers);
 	// 3. create threads for each philosopher to run
 		// 3.1 create thread
 		// 3.2 create thread attributes
