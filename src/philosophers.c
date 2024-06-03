@@ -23,6 +23,19 @@ int	parser(int argc, char *argv[], t_data *data)
 	return (1);
 }
 
+void	check_process_status(t_philo *philo)
+{
+	int i;
+
+	i = 0;
+	while (i < philo->data->philo_count)
+	{
+		printf("philo: %d is %d\n", philo->id, philo->state);
+		i++;
+	}
+	if (i == philo->data->philo_count)
+		printf("all philosophers are ready\n");
+}
 
 int main(int argc, char *argv[])
 {
@@ -34,7 +47,9 @@ int main(int argc, char *argv[])
 	/* 2. initialize data and mutexes for each philosopher */
 	if (!init_datas(&data))
 		return (1);
-	// 3.
+	check_process_status(data.philosophers);
+	printf("%ld\n", get_time());
+	test_time();
 	// 3. create threads for each philosopher to run
 		// 3.1 create thread
 		// 3.2 create thread attributes

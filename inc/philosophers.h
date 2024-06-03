@@ -5,14 +5,10 @@
 # include <stdbool.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <sys/time.h>
 
 typedef struct s_philosopher t_philo;
 typedef struct s_data t_data;
-typedef struct time
-{
-	long int		sec;
-	long int		usec;
-}	t_tv;
 
 typedef enum t_state
 {
@@ -36,13 +32,14 @@ typedef struct s_philosopher
 {
 	int				id;
 	int				meal_count;
+	long			last_meal;
 	pthread_t		thread;
 	t_fork			*first_fork;
 	t_fork			*second_fork;
-	t_tv			last_meal;
 	t_state			state;
 	t_data			*data;
 	pthread_mutex_t	meal_mutex;
+
 }	t_philo;
 
 typedef struct s_data
@@ -76,6 +73,7 @@ int 			init_datas(t_data *data);
 
 int 			init_forks(t_data *data);
 int 			init_philos(t_data *data);
+
 /* init utils */
 
 /* free utils */
@@ -84,5 +82,12 @@ void			clean_philos(t_data *data);
 void			clean_forks(t_data *data);
 void			free_forks(t_data *data, int i);
 /* free utils */
+
+/* time utils */
+long			get_time(void);
+
+void test_time(void);
+
+/* time utils */
 
 #endif
