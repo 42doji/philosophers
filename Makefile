@@ -1,24 +1,24 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-INCLUDES = -Ilibft -Iphilosophers -Ift_printf -I.
-LDFLAGS = -L. -lft -lpthread -lftprintf
-LIBFT = libft.a
+INCLUDES = -Iphilosophers -Ift_printf -I.
+LDFLAGS = -L. -lpthread -lftprintf
 FTPRINTF = libftprintf.a
 NAME = philo
-SRCS = main.c
+SRC_DIR = ./src
+INC_DIR = ./inc
+INC = $(INC_DIR)/philosophers.h
+SRCS = $(SRC_DIR)/philosophers.c $(SRC_DIR)/philosophers_utils.c \
+        $(SRC_DIR)/forks.c $(SRC_DIR)/callback.c $(SRC_DIR)/ft_atoi.c \
+        $(SRC_DIR)/ft_split.c $(SRC_DIR)/string_utils.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT) $(FTPRINTF)
+$(NAME): $(OBJS) $(FTPRINTF)
 	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LDFLAGS) -o $(NAME)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-
-$(LIBFT):
-	cd libft && $(MAKE)
-	@if [ -f libft/$(LIBFT) ]; then cp libft/$(LIBFT) .; fi
 
 $(FTPRINTF):
 	cd ft_printf && $(MAKE)
@@ -26,12 +26,10 @@ $(FTPRINTF):
 
 clean:
 	-rm -f $(OBJS)
-	$(MAKE) -C libft clean
 	$(MAKE) -C ft_printf clean
 
 fclean: clean
 	-rm -f $(NAME)
-	-rm -f $(LIBFT)
 	-rm -f $(FTPRINTF)
 
 re: fclean all
