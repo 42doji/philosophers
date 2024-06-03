@@ -4,12 +4,9 @@ int free_mutexes(t_data *data, int i)
 {
 	while (i >= 0)
 	{
-		if (&data->philosophers[i].msg_mutex)
-			pthread_mutex_destroy(&data->philosophers[i].msg_mutex);
-		if (&data->philosophers[i].dead_mutex)
-			pthread_mutex_destroy(&data->philosophers[i].dead_mutex);
-		if (&data->philosophers[i].meal_mutex)
-			pthread_mutex_destroy(&data->philosophers[i].meal_mutex);
+		/* may be need to unlock mutex before destroy */
+		pthread_mutex_unlock(&data->philosophers[i].meal_mutex);
+		pthread_mutex_destroy(&data->philosophers[i].meal_mutex);
 		i--;
 	}
 	return (0);
@@ -29,13 +26,8 @@ int init_philos(t_data *data)
 		data->philosophers[i].meal_count = 0;
 		data->philosophers[i].first_fork = &data->forks[i];
 		data->philosophers[i].second_fork = &data->forks[(i + 1) % data->philo_count];
-		data->philosophers[i].msg = NULL;
 		data->philosophers[i].state = INACTIVE;
 		data->philosophers[i].data = data;
-		if (pthread_mutex_init(&data->philosophers[i].msg_mutex, NULL))
-			return (free_mutexes(data, i - 1));
-		if (pthread_mutex_init(&data->philosophers[i].dead_mutex, NULL))
-			return (free_mutexes(data, i - 1));
 		if (pthread_mutex_init(&data->philosophers[i].meal_mutex, NULL))
 			return (free_mutexes(data, i - 1));
 		printf("philo: %d init_philos\n", i);
@@ -55,10 +47,7 @@ void	clean_philos(t_data *data)
 		data->philosophers[i].meal_count = -1;
 		data->philosophers[i].first_fork = NULL;
 		data->philosophers[i].second_fork = NULL;
-		data->philosophers[i].msg = NULL;
 		data->philosophers[i].state = INACTIVE;
-		pthread_mutex_destroy(&data->philosophers[i].msg_mutex);
-		pthread_mutex_destroy(&data->philosophers[i].dead_mutex);
 		pthread_mutex_destroy(&data->philosophers[i].meal_mutex);
 		printf("philo: %d clean_philos\n", i);
 		i++;

@@ -37,14 +37,11 @@ typedef struct s_philosopher
 	int				id;
 	int				meal_count;
 	pthread_t		thread;
-	t_fork	*first_fork;
-	t_fork	*second_fork;
-	char			*msg;
+	t_fork			*first_fork;
+	t_fork			*second_fork;
 	t_tv			last_meal;
 	t_state			state;
 	t_data			*data;
-	pthread_mutex_t	msg_mutex;
-	pthread_mutex_t	dead_mutex;
 	pthread_mutex_t	meal_mutex;
 }	t_philo;
 
@@ -71,7 +68,6 @@ int				ft_isspace(char c);
 int				ft_strlcpy(char *dst, const char *src, int size);
 ssize_t			ft_strlen(const char *s);
 char			*ft_strdup(const char *s);
-
 /* parsing utils */
 
 
@@ -83,11 +79,10 @@ int 			init_philos(t_data *data);
 /* init utils */
 
 /* free utils */
-int 	free_mutexes(t_data *data, int i);
-void	clean_philos(t_data *data);
-void	clean_forks(t_data *data);
-void	free_forks(t_data *data, int i);
-
+int 			free_mutexes(t_data *data, int i);
+void			clean_philos(t_data *data);
+void			clean_forks(t_data *data);
+void			free_forks(t_data *data, int i);
 /* free utils */
 
 #endif
