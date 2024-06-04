@@ -18,12 +18,17 @@ void print_msg(t_philo *philo, int state)
 
 void eating(t_philo *philo)
 {
+	t_philo	*p;
+
+	p = (t_philo *)philo;
 	if (philo->data->meal_count != -1 && philo->meal_count >= philo->data->meal_count)
 		return;
 	pthread_mutex_lock(&philo->meal_mutex);
 	philo->last_meal = get_time();
 	print_msg(philo, EATING);
 	philo->meal_count++;
+	p->start_time = get_time();
+	p->death_time = p->start_time + ((t_philo *)philo)->data->time_to_die;
 	usleep(philo->data->time_to_eat * 1000);
 	philo->state = SLEEPING;
 	pthread_mutex_unlock(&philo->meal_mutex);
@@ -54,7 +59,7 @@ int check_meal_count(t_data *data)
 	i = 0;
 	while (i < data->nb_phil)
 	{
-		if (data->phils[i].meal_count < data->meal_count)
+		if (data->meal_count != -1 && data->phils[i].meal_count < data->meal_count)
 			return 0;
 		i++;
 	}
@@ -82,7 +87,7 @@ void *philo_life(void *philo)
 	p->death_time = p->start_time + ((t_philo *)philo)->data->time_to_die;
 	while (1)
 	{
-		if (p->meal_count != -1 && check_meal_count(p->data))
+		if (check_meal_count(p->data))
 			break;
 		if (get_time() > p->death_time)
 		{
@@ -91,6 +96,7 @@ void *philo_life(void *philo)
 		}
 		else if (take_forks((t_philo *)philo))
 		{
+
 			eating((t_philo *)philo);
 			sleeping((t_philo *)philo);
 		}
