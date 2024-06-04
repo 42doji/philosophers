@@ -33,6 +33,7 @@ typedef struct s_philosopher
 	int				meal_count;
 	long 			start_time;
 	long			death_time;
+	long			last_meal;
 	pthread_t		thread;
 	t_fork			*first_fork;
 	t_fork			*second_fork;
