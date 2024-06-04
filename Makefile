@@ -1,8 +1,7 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
-INCLUDES = -Iphilosophers -Ift_printf -I.
-LDFLAGS = -L. -lpthread -lftprintf
-FTPRINTF = libftprintf.a
+INCLUDES = -Iphilosophers -I.
+LDFLAGS = -L. -lpthread
 NAME = philo
 SRC_DIR = ./src
 INC_DIR = ./inc
@@ -14,23 +13,17 @@ OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(FTPRINTF)
+$(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LDFLAGS) -o $(NAME)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(FTPRINTF):
-	cd ft_printf && $(MAKE)
-	@if [ -f ft_printf/$(FTPRINTF) ]; then cp ft_printf/$(FTPRINTF) .; fi
-
 clean:
 	-rm -f $(OBJS)
-	$(MAKE) -C ft_printf clean
 
 fclean: clean
 	-rm -f $(NAME)
-	-rm -f $(FTPRINTF)
 
 re: fclean all
 
