@@ -17,7 +17,7 @@ typedef enum t_state
 	SLEEPING,
 	DEAD,
 	INACTIVE
-}	t_state;
+}	t_state;  // TODO: rename t_state to e_state
 
 typedef struct s_fork
 {
@@ -31,7 +31,6 @@ typedef struct s_philosopher
 {
 	int				id;
 	int				meal_count;
-	long			last_meal;
 	long 			start_time;
 	long			death_time;
 	pthread_t		thread;
@@ -40,7 +39,6 @@ typedef struct s_philosopher
 	t_state			state;
 	t_data			*data;
 	pthread_mutex_t	meal_mutex;
-
 }	t_philo;
 
 typedef struct s_data
@@ -56,21 +54,19 @@ typedef struct s_data
 
 /* parsing utils */
 int				parser(int argc, char *argv[], t_data *data);
-
 int     		ft_atoi(const char *nptr);
 int				ft_isspace(char c);
 /* parsing utils */
 
-
 /* init utils */
 int 			init_datas(t_data *data);
-
 int 			init_forks(t_data *data);
 int 			init_philos(t_data *data);
 
 /* init utils */
 
 /* free utils */
+// TODO: finish
 int 			free_mutexes(t_data *data, int i);
 void			clean_philos(t_data *data);
 void			clean_forks(t_data *data);
@@ -83,10 +79,10 @@ long			get_time(void);
 
 /* fork funcs */
 int	take_forks(t_philo *philo);
-
 int	drop_forks(t_philo *philo);
 t_fork	*get_first_fork(t_philo *philo);
 t_fork	*get_second_fork(t_philo *philo);
+/* fork funcs */
 
 /* routine funcs */
 void	*philo_life(void *philo);
@@ -96,8 +92,5 @@ void	sleeping(t_philo *philo);
 void	eating(t_philo *philo);
 void	print_msg(t_philo *philo, int state);
 int		set_philo_state(t_philo *philo);
-
 /* routine funcs */
-
-
 #endif
