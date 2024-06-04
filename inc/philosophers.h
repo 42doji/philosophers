@@ -33,6 +33,8 @@ typedef struct s_philosopher
 	int				id;
 	int				meal_count;
 	long			last_meal;
+	long 			start_time;
+	long			death_time;
 	pthread_t		thread;
 	t_fork			*first_fork;
 	t_fork			*second_fork;
@@ -44,27 +46,20 @@ typedef struct s_philosopher
 
 typedef struct s_data
 {
-	int				philo_count;
+	int				nb_phil;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				meal_count;
-	t_philo			*philosophers;
+	t_philo			*phils;
 	t_fork			*forks;
 }	t_data;
 
 /* parsing utils */
-int	parser(int argc, char *argv[], t_data *data);
+int				parser(int argc, char *argv[], t_data *data);
 
-char    		**ft_split(char const *s, char c);
 int     		ft_atoi(const char *nptr);
-int   	 		ft_count_words(char const *s, char sep);
-void	   		ft_allocate(char **tab, char const *s, char sep);
-char    		*ft_substr(char const *s, unsigned int start, size_t len);
 int				ft_isspace(char c);
-int				ft_strlcpy(char *dst, const char *src, int size);
-ssize_t			ft_strlen(const char *s);
-char			*ft_strdup(const char *s);
 /* parsing utils */
 
 
@@ -85,8 +80,25 @@ void			free_forks(t_data *data, int i);
 
 /* time utils */
 long			get_time(void);
-void 			test_time(void);
-void			test_eat(t_philo *philo);
 /* time utils */
+
+/* fork funcs */
+int	take_forks(t_philo *philo);
+
+int	drop_forks(t_philo *philo);
+t_fork	*get_first_fork(t_philo *philo);
+t_fork	*get_second_fork(t_philo *philo);
+
+/* routine funcs */
+void	*philo_life(void *philo);
+void	dead(t_philo *philo);
+void	thinking(t_philo *philo);
+void	sleeping(t_philo *philo);
+void	eating(t_philo *philo);
+void	print_msg(t_philo *philo, int state);
+int		set_philo_state(t_philo *philo);
+
+/* routine funcs */
+
 
 #endif

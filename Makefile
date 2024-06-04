@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 INCLUDES = -Iphilosophers -Ift_printf -I.
 LDFLAGS = -L. -lpthread -lftprintf
 FTPRINTF = libftprintf.a
@@ -8,8 +8,8 @@ SRC_DIR = ./src
 INC_DIR = ./inc
 INC = $(INC_DIR)/philosophers.h
 SRCS = $(SRC_DIR)/philosophers.c $(SRC_DIR)/philosophers_utils.c \
-        $(SRC_DIR)/forks.c $(SRC_DIR)/callback.c $(SRC_DIR)/ft_atoi.c \
-        $(SRC_DIR)/ft_split.c $(SRC_DIR)/string_utils.c $(SRC_DIR)/time_utils.c
+        $(SRC_DIR)/forks.c  $(SRC_DIR)/ft_atoi.c $(SRC_DIR)/forks_ii.c \
+        $(SRC_DIR)/time_utils.c $(SRC_DIR)/routine.c $(SRC_DIR)/acts.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)

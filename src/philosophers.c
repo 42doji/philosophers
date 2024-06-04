@@ -1,26 +1,44 @@
 #include "../inc/philosophers.h"
 
+void	start_simulation(t_data *data)
+{
+	int i;
+
+	i = 0;
+	if (data->meal_count == 0)
+		return ;
+	else if (data->nb_phil == 1)
+	{
+		// TODO
+	}
+	else
+	{
+		while (i < data->nb_phil)
+		{
+			philo_life(&data->phils[i]);
+			i++;
+		}
+	}
+}
+
 void	check_process_status(t_philo *philo)
 {
 	int i;
 
 	i = 0;
-	while (i < philo->data->philo_count)
+	while (i < philo->data->nb_phil)
 	{
-		if (philo->state == INACTIVE)
-			printf("philo: %d is inactive\n", philo->data->philosophers[i].id);
+		set_philo_state(&philo[i]);
 		i++;
 	}
-	if (i == philo->data->philo_count)
-		printf("all philosophers are ready\n");
 }
 
 int	parser(int argc, char *argv[], t_data *data)
 {
 	if (argc < 5 || argc > 6)
 		return (0);
-	data->philo_count = ft_atoi(argv[1]);
-	printf("philo_count: %d\n", data->philo_count);
+	data->nb_phil = ft_atoi(argv[1]);
+	printf("philo_count: %d\n", data->nb_phil);
 	data->time_to_die = ft_atoi(argv[2]);
 	printf("time_to_die: %d\n", data->time_to_die);
 	data->time_to_eat = ft_atoi(argv[3]);
@@ -48,26 +66,9 @@ int main(int argc, char *argv[])
 	/* 2. initialize data and mutexes for each philosopher */
 	if (!init_datas(&data))
 		return (1);
-	check_process_status(data.philosophers);
-	printf("%ld\n", get_time());
-	test_eat(data.philosophers);
-	// 3. create threads for each philosopher to run
-		// 3.1 create thread
-		// 3.2 create thread attributes
-		// 3.3 create thread callback function
-		// 3.4 create thread callback function argument
-		// 3.5 create thread
-		// 3.6 destroy thread attributes
-		// 3.7 destroy thread
-	// 4. join threads for each philosopher to finish
-		// 4.1 join thread
-		// 4.2 destroy thread attributes
-		// 4.3 destroy thread
-	// 5. free data
-		// 5.1 free mutexes
-		// 5.2 free philosophers
-		// 5.3 free shared data
-	// 6. return
+	check_process_status(data.phils);
+	start_simulation(&data);
+
 
 	return (0);
 }

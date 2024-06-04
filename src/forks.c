@@ -13,11 +13,11 @@ int init_forks(t_data *data)
 {
 	int i;
 
-	data->forks = (t_fork *)malloc(sizeof(t_fork) * data->philo_count);
+	data->forks = (t_fork *)malloc(sizeof(t_fork) * data->nb_phil);
 	if (!data->forks)
 		return (0);
 	i = 0;
-	while (i < data->philo_count)
+	while (i < data->nb_phil)
 	{
 		data->forks[i].id = i;
 		data->forks[i].is_taken = 0;
@@ -36,7 +36,7 @@ void	clean_forks(t_data *data)
 	int i;
 
 	i = 0;
-	while (i < data->philo_count)
+	while (i < data->nb_phil)
 	{
 		data->forks[i].id = -1;
 		data->forks[i].is_taken = 0;
