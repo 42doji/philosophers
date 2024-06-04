@@ -21,10 +21,10 @@ int init_forks(t_data *data)
 	{
 		data->forks[i].id = i;
 		data->forks[i].is_taken = 0;
-		data->forks[i].owner = NULL;
 		if (pthread_mutex_init(&data->forks[i].mutex, NULL))
 		{
 			free_forks(data, i - 1);
+			free(data->forks);
 			break;
 		}i++;
 	}
@@ -40,7 +40,6 @@ void	clean_forks(t_data *data)
 	{
 		data->forks[i].id = -1;
 		data->forks[i].is_taken = 0;
-		data->forks[i].owner = NULL;
 		pthread_mutex_destroy(&data->forks[i].mutex);
 		i++;
 	}
@@ -67,13 +66,14 @@ int	take_forks(t_philo *philo)
 
 	first_fork = get_first_fork(philo);
 	second_fork = get_second_fork(philo);
+	if (first_fork->is_taken || second_fork->is_taken)
+		return (0);
 	pthread_mutex_lock(&first_fork->mutex);
-	pthread_mutex_lock(&second_fork->mutex);
 	first_fork->is_taken = 1;
+	pthread_mutex_lock(&second_fork->mutex);
 	second_fork->is_taken = 1;
-	first_fork->owner = philo;
-	second_fork->owner = philo;
-	pthread_mutex_unlock(&second_fork->mutex);
-	pthread_mutex_unlock(&first_fork->mutex);
+	philo->first_fork = first_fork;
+	philo->second_fork = second_fork;
+	printf("%ld %d has taken both forks\n", get_time() - philo->start_time, philo->id);
 	return (1);
 }

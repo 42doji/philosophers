@@ -1,6 +1,6 @@
 #include "../inc/philosophers.h"
 
-void	start_simulation(t_data *data)
+void    start_simulation(t_data *data)
 {
 	int i;
 
@@ -9,13 +9,22 @@ void	start_simulation(t_data *data)
 		return ;
 	else if (data->nb_phil == 1)
 	{
-		// TODO
+		printf("0 1 has taken a fork\n");
+		usleep(data->time_to_die * 1000);
+		printf("%d 1 died\n", data->time_to_die);
+		return ;
 	}
 	else
 	{
 		while (i < data->nb_phil)
 		{
-			philo_life(&data->phils[i]);
+			pthread_create(&data->phils[i].thread, NULL, philo_life, &data->phils[i]);
+			i++;
+		}
+		i = 0;
+		while (i < data->nb_phil)
+		{
+			pthread_join(data->phils[i].thread, NULL);
 			i++;
 		}
 	}
@@ -56,19 +65,15 @@ int	parser(int argc, char *argv[], t_data *data)
 	return (1);
 }
 
-int main(int argc, char *argv[])
+int     main(int argc, char *argv[])
 {
-	t_data	data;
+	t_data  data;
 
-	/* 1. parse arguments */
 	if (!parser(argc, argv, &data))
 		return (1);
-	/* 2. initialize data and mutexes for each philosopher */
 	if (!init_datas(&data))
 		return (1);
-	check_process_status(data.phils);
 	start_simulation(&data);
-
-
 	return (0);
 }
+

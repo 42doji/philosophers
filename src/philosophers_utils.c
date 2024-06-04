@@ -4,7 +4,6 @@ int free_mutexes(t_data *data, int i)
 {
 	while (i >= 0)
 	{
-		/* may be need to unlock mutex before destroy */
 		pthread_mutex_unlock(&data->phils[i].meal_mutex);
 		pthread_mutex_destroy(&data->phils[i].meal_mutex);
 		i--;
@@ -29,13 +28,17 @@ int init_philos(t_data *data)
 		data->phils[i].state = INACTIVE;
 		data->phils[i].data = data;
 		if (pthread_mutex_init(&data->phils[i].meal_mutex, NULL))
-			return (free_mutexes(data, i - 1));
+		{
+			free_mutexes(data, i - 1);
+			free(data->phils);
+			return (0);
+		}
 		i++;
 	}
 	return (1);
 }
 
-void	clean_philos(t_data *data)
+void clean_philos(t_data *data)
 {
 	int i;
 
@@ -52,6 +55,7 @@ void	clean_philos(t_data *data)
 		i++;
 	}
 	free(data->phils);
+	data->phils = NULL;
 }
 
 int init_datas(t_data *data)
@@ -61,6 +65,7 @@ int init_datas(t_data *data)
 	if (!init_philos(data))
 	{
 		free_forks(data, data->nb_phil - 1);
+		free(data->forks);
 		return (0);
 	}
 	return (1);

@@ -23,7 +23,6 @@ typedef struct s_fork
 {
 	int				id;
 	int 			is_taken;
-	t_philo 		*owner;
 	pthread_mutex_t	mutex;
 
 }	t_fork;
