@@ -40,6 +40,7 @@ typedef struct s_philosopher
 	t_state			state;
 	t_data			*data;
 	pthread_mutex_t	meal_mutex;
+	pthread_mutex_t print_mutex;
 }	t_philo;
 
 typedef struct s_data
@@ -93,5 +94,7 @@ void	sleeping(t_philo *philo);
 void	eating(t_philo *philo);
 void	print_msg(t_philo *philo, int state);
 int		set_philo_state(t_philo *philo);
+void 	print_msg(t_philo *philo, int state);
+
 /* routine funcs */
 #endif

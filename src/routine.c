@@ -1,10 +1,8 @@
 #include "../inc/philosophers.h"
 
-pthread_mutex_t print_mutex = PTHREAD_MUTEX_INITIALIZER;
-
 void print_msg(t_philo *philo, int state)
 {
-	pthread_mutex_lock(&print_mutex);
+	pthread_mutex_lock(&philo->print_mutex);
 	if (state == EATING)
 		printf("%ld %d is eating\n", get_time() - philo->start_time, philo->id);
 	else if (state == SLEEPING)
@@ -13,7 +11,7 @@ void print_msg(t_philo *philo, int state)
 		printf("%ld %d is thinking\n", get_time() - philo->start_time, philo->id);
 	else if (state == DEAD)
 		printf("%ld %d died\n", get_time() - philo->start_time, philo->id);
-	pthread_mutex_unlock(&print_mutex);
+	pthread_mutex_unlock(&philo->print_mutex);
 }
 
 void eating(t_philo *philo)

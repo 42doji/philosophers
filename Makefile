@@ -1,6 +1,6 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
-INCLUDES = -Iphilosophers -I.
+INCLUDES = -Iphilosophers -I/inc
 LDFLAGS = -L. -lpthread
 NAME = philo
 SRC_DIR = ./src
