@@ -1,6 +1,6 @@
 #include "../inc/philosophers.h"
 
-int	drop_forks(t_philo *philo)
+int drop_forks(t_philo *philo)
 {
 	t_fork *first_fork;
 	t_fork *second_fork;
@@ -22,4 +22,4 @@ int	drop_forks(t_philo *philo)
 	pthread_mutex_unlock(&philo->print_mutex);
 
 	return (0);
-};
+}

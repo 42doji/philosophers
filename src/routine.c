@@ -16,21 +16,16 @@ void print_msg(t_philo *philo, int state)
 
 void eating(t_philo *philo)
 {
-	t_philo	*p;
-
-	p = (t_philo *)philo;
-	if (philo->data->meal_count != -1 && philo->meal_count >= philo->data->meal_count)
-		return;
 	pthread_mutex_lock(&philo->meal_mutex);
 	philo->last_meal = get_time();
 	print_msg(philo, EATING);
 	philo->meal_count++;
-	p->start_time = get_time();
-	p->death_time = p->start_time + ((t_philo *)philo)->data->time_to_die;
-	usleep(philo->data->time_to_eat * 1000);
-	philo->state = SLEEPING;
 	pthread_mutex_unlock(&philo->meal_mutex);
+
+	usleep(philo->data->time_to_eat * 1000);
+
 	drop_forks(philo);
+	philo->state = SLEEPING;
 }
 
 void sleeping(t_philo *philo)

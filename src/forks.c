@@ -9,7 +9,6 @@ void	free_forks(t_data *data, int i)
 		i--;
 	}
 }
-
 int init_forks(t_data *data)
 {
 	int i;
@@ -27,8 +26,7 @@ int init_forks(t_data *data)
 			free_forks(data, i - 1);
 			free(data->forks);
 			break;
-		}
-		i++;
+		}i++;
 	}
 	return (1);
 }
@@ -61,7 +59,7 @@ t_fork	*get_second_fork(t_philo *philo)
 	return (philo->first_fork);
 }
 
-int	take_forks(t_philo *philo)
+int take_forks(t_philo *philo)
 {
 	t_fork *first_fork;
 	t_fork *second_fork;
@@ -69,16 +67,10 @@ int	take_forks(t_philo *philo)
 	first_fork = get_first_fork(philo);
 	second_fork = get_second_fork(philo);
 
-	// 포크를 잡기 위한 동기화 강화
 	pthread_mutex_lock(&first_fork->mutex);
-	if (first_fork->is_taken)
-	{
-		pthread_mutex_unlock(&first_fork->mutex);
-		return (0);
-	}
-
 	pthread_mutex_lock(&second_fork->mutex);
-	if (second_fork->is_taken)
+
+	if (first_fork->is_taken || second_fork->is_taken)
 	{
 		pthread_mutex_unlock(&second_fork->mutex);
 		pthread_mutex_unlock(&first_fork->mutex);
@@ -87,6 +79,7 @@ int	take_forks(t_philo *philo)
 
 	first_fork->is_taken = 1;
 	second_fork->is_taken = 1;
+
 	pthread_mutex_unlock(&first_fork->mutex);
 	pthread_mutex_unlock(&second_fork->mutex);
 
