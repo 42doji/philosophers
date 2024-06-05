@@ -18,6 +18,7 @@ void eating(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->meal_mutex);
 	philo->last_meal = get_time();
+	philo->death_time = philo->last_meal + philo->data->time_to_die;
 	print_msg(philo, EATING);
 	philo->meal_count++;
 	pthread_mutex_unlock(&philo->meal_mutex);
