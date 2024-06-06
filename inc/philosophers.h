@@ -13,7 +13,9 @@ typedef struct s_data t_data;
 typedef enum t_state
 {
 	THINKING,
+	FORK_TAKEN,
 	EATING,
+	FORK_DROPPED,
 	SLEEPING,
 	DEAD,
 	INACTIVE

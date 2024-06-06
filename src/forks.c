@@ -47,6 +47,8 @@ void	clean_forks(t_data *data)
 
 t_fork	*get_first_fork(t_philo *philo)
 {
+	if (!philo || !philo->first_fork || !philo->second_fork)
+		return (NULL);
 	if (philo->first_fork->id < philo->second_fork->id)
 		return (philo->first_fork);
 	return (philo->second_fork);
@@ -54,6 +56,8 @@ t_fork	*get_first_fork(t_philo *philo)
 
 t_fork	*get_second_fork(t_philo *philo)
 {
+	if (!philo || !philo->first_fork || !philo->second_fork)
+		return (NULL);
 	if (philo->first_fork->id < philo->second_fork->id)
 		return (philo->second_fork);
 	return (philo->first_fork);
@@ -66,29 +70,18 @@ int take_forks(t_philo *philo)
 
 	first_fork = get_first_fork(philo);
 	second_fork = get_second_fork(philo);
-
-	pthread_mutex_lock(&first_fork->mutex);
-	pthread_mutex_lock(&second_fork->mutex);
-
 	if (first_fork->is_taken || second_fork->is_taken)
+		return (0);
+	if (pthread_mutex_lock(&first_fork->mutex))
+		return (0);
+	first_fork->is_taken = 1;
+	if (pthread_mutex_lock(&second_fork->mutex))
 	{
-		pthread_mutex_unlock(&second_fork->mutex);
 		pthread_mutex_unlock(&first_fork->mutex);
+		first_fork->is_taken = 0;
 		return (0);
 	}
-
-	first_fork->is_taken = 1;
 	second_fork->is_taken = 1;
-
-	pthread_mutex_unlock(&first_fork->mutex);
-	pthread_mutex_unlock(&second_fork->mutex);
-
-	philo->first_fork = first_fork;
-	philo->second_fork = second_fork;
-
-	pthread_mutex_lock(&philo->print_mutex);
-	printf("%ld %d has taken both forks\n", get_time() - philo->start_time, philo->id);
-	pthread_mutex_unlock(&philo->print_mutex);
-
+	print_msg(philo, FORK_TAKEN);
 	return (1);
 }

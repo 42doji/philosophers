@@ -11,6 +11,10 @@ void print_msg(t_philo *philo, int state)
 		printf("%ld %d is thinking\n", get_time() - philo->start_time, philo->id);
 	else if (state == DEAD)
 		printf("%ld %d died\n", get_time() - philo->start_time, philo->id);
+	else if (state == FORK_TAKEN)
+		printf("%ld %d has taken a fork\n", get_time() - philo->start_time, philo->id);
+	else if (state == FORK_DROPPED)
+		printf("%ld %d has dropped a fork\n", get_time() - philo->start_time, philo->id);
 	pthread_mutex_unlock(&philo->print_mutex);
 }
 
@@ -46,20 +50,6 @@ void dead(t_philo *philo)
 	print_msg(philo, DEAD);
 }
 
-int check_meal_count(t_data *data)
-{
-	int i;
-
-	i = 0;
-	while (i < data->nb_phil)
-	{
-		if (data->meal_count != -1 && data->phils[i].meal_count < data->meal_count)
-			return 0;
-		i++;
-	}
-	return 1;
-}
-
 int set_philo_state(t_philo *philo)
 {
 	if (philo->data->meal_count != -1 && philo->meal_count >= philo->data->meal_count)
@@ -81,8 +71,6 @@ void *philo_life(void *philo)
 	p->death_time = p->start_time + ((t_philo *)philo)->data->time_to_die;
 	while (1)
 	{
-		if (check_meal_count(p->data))
-			break;
 		if (get_time() > p->death_time)
 		{
 			dead((t_philo *)philo);
