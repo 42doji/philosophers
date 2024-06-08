@@ -4,8 +4,7 @@ void	free_forks(t_data *data, int i)
 {
 	while (i >= 0)
 	{
-		if (&data->forks[i].mutex)
-			pthread_mutex_destroy(&data->forks[i].mutex);
+		pthread_mutex_destroy(&data->forks[i].mutex);
 		i--;
 	}
 }
