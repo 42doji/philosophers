@@ -23,30 +23,35 @@ int is_everyone_full(t_data *data)
 	int i;
 	int everyone_full = 1;
 
+	i = 0;
 	pthread_mutex_lock(&data->mutex);
-	for (i = 0; i < data->nb_phil; i++)
+	while (i < data->nb_phil)
 	{
 		if (!data->phils[i].is_full)
 		{
 			everyone_full = 0;
 			break;
 		}
+		i++;
 	}
 	data->everyone_is_full = everyone_full;
 	pthread_mutex_unlock(&data->mutex);
 	return everyone_full;
 }
 
-
 void eating(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->meal_mutex);
 	philo->last_meal = get_time();
-	philo->death_time = philo->last_meal + philo->data->time_to_die;
+	philo->death_time = philo->last_meal + philo->data->time_to_die + 100;
 	print_msg(philo, EATING);
 	philo->meal_count++;
 	if (philo->meal_count >= philo->data->meal_count)
+	{
+		pthread_mutex_lock(&philo->data->mutex);
 		philo->is_full = 1;
+		pthread_mutex_unlock(&philo->data->mutex);
+	}
 	pthread_mutex_unlock(&philo->meal_mutex);
 	usleep(philo->data->time_to_eat * 1000);
 	drop_forks(philo);
@@ -62,15 +67,15 @@ void sleeping(t_philo *philo)
 
 void thinking(t_philo *philo)
 {
-	while (philo->state == THINKING)
+	if (take_forks(philo))
 	{
-		if (take_forks(philo))
-		{
-			eating(philo);
-			sleeping(philo);
-		}
-		else
-			usleep(100);
+		eating(philo);
+		sleeping(philo);
+	}
+	else
+	{
+		usleep(100);
+		set_philo_state(philo, THINKING);
 	}
 }
 
@@ -80,13 +85,15 @@ void dead(t_philo *philo)
 	set_philo_state(philo, DEAD);
 }
 
+
 int set_philo_state(t_philo *p, e_state state)
 {
+	pthread_mutex_lock(&p->data->mutex);
 	if (state == INACTIVE)
 	{
 		p->start_time = get_time();
 		p->last_meal = p->start_time;
-		p->death_time = p->start_time + ((t_philo *)p)->data->time_to_die;
+		p->death_time = p->start_time + p->data->time_to_die;
 		p->state = INACTIVE;
 	}
 	else if (state == THINKING)
@@ -98,8 +105,12 @@ int set_philo_state(t_philo *p, e_state state)
 	else if (state == DEAD)
 		p->state = DEAD;
 	else
-		return (0);
-	return (1);
+	{
+		pthread_mutex_unlock(&p->data->mutex);
+		return 0;
+	}
+	pthread_mutex_unlock(&p->data->mutex);
+	return 1;
 }
 
 int is_dead(t_philo *philo)
@@ -131,25 +142,26 @@ void	set_philo_is_full(t_philo *philo)
 
 void *philo_life(void *philo)
 {
-	t_philo *p;
-
-	p = (t_philo *)philo;
+	t_philo *p = (t_philo *)philo;
 	set_philo_state(p, INACTIVE);
-	while (!is_everyone_full(p->data))
+	while (1)
 	{
-		if (is_dead((t_philo *)philo))
+		if (is_everyone_full(p->data) || p->data->everyone_is_full)
 			break;
-		if (take_forks((t_philo *)philo))
+		if (is_dead(p))
+			break;
+		if (take_forks(p))
 		{
-
-			eating((t_philo *)philo);
-			sleeping((t_philo *)philo);
+			eating(p);
+			sleeping(p);
 		}
 		else
-			set_philo_state((t_philo *)philo, THINKING);
+			set_philo_state(p, THINKING);
 		if (p->state == THINKING)
-			thinking((t_philo *)philo);
+			thinking(p);
+
 	}
-	print_eat_count((t_philo *)philo);
+	print_eat_count(p);
 	return NULL;
 }
+
