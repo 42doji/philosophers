@@ -19,7 +19,7 @@ typedef enum t_state
 	SLEEPING,
 	DEAD,
 	INACTIVE
-}	e_state;  // TODO: rename e_state to e_state
+}	e_state;
 
 typedef struct s_fork
 {
@@ -34,6 +34,7 @@ typedef struct s_philosopher
 	int				id;
 	int 			is_full;
 	int				meal_count;
+	int 			thought_count;
 	long 			start_time;
 	long			death_time;
 	long			last_meal;

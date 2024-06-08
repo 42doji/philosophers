@@ -43,7 +43,7 @@ void eating(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->meal_mutex);
 	philo->last_meal = get_time();
-	philo->death_time = philo->last_meal + philo->data->time_to_die + 100;
+	philo->death_time = philo->last_meal + philo->data->time_to_die;
 	print_msg(philo, EATING);
 	philo->meal_count++;
 	if (philo->meal_count >= philo->data->meal_count)
@@ -60,6 +60,8 @@ void eating(t_philo *philo)
 
 void sleeping(t_philo *philo)
 {
+	if (philo->thought_count == 1)
+		print_msg(philo, THINKING);
 	print_msg(philo, SLEEPING);
 	usleep(philo->data->time_to_sleep * 1000);
 	set_philo_state(philo, THINKING);
@@ -74,6 +76,11 @@ void thinking(t_philo *philo)
 	}
 	else
 	{
+		if (philo->thought_count == 0)
+		{
+			philo->thought_count++;
+			print_msg(philo, THINKING);
+		}
 		usleep(100);
 		set_philo_state(philo, THINKING);
 	}
@@ -146,7 +153,7 @@ void *philo_life(void *philo)
 	set_philo_state(p, INACTIVE);
 	while (1)
 	{
-		if (is_everyone_full(p->data) || p->data->everyone_is_full)
+		if (is_everyone_full(p->data) && p->data->meal_count != -1)
 			break;
 		if (is_dead(p))
 			break;
@@ -159,7 +166,6 @@ void *philo_life(void *philo)
 			set_philo_state(p, THINKING);
 		if (p->state == THINKING)
 			thinking(p);
-
 	}
 	print_eat_count(p);
 	return NULL;
