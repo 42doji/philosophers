@@ -32,6 +32,7 @@ typedef struct s_fork
 typedef struct s_philosopher
 {
 	int				id;
+	int 			is_full;
 	int				meal_count;
 	long 			start_time;
 	long			death_time;
@@ -42,7 +43,6 @@ typedef struct s_philosopher
 	e_state			state;
 	t_data			*data;
 	pthread_mutex_t	meal_mutex;
-	pthread_mutex_t print_mutex;
 }	t_philo;
 
 typedef struct s_data
@@ -52,6 +52,8 @@ typedef struct s_data
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				meal_count;
+	int 			everyone_is_full;
+	pthread_mutex_t mutex;
 	t_philo			*phils;
 	t_fork			*forks;
 }	t_data;
@@ -97,6 +99,10 @@ void	eating(t_philo *philo);
 void	print_msg(t_philo *philo, int state);
 int set_philo_state(t_philo *philo, e_state state);
 void 	print_msg(t_philo *philo, int state);
-
+void	print_eat_count(t_philo *philo);
+int is_dead(t_philo *philo);
+int is_everyone_full(t_data *data);
 /* routine funcs */
+
+
 #endif

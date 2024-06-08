@@ -43,6 +43,7 @@ int	parser(int argc, char *argv[], t_data *data)
 	data->time_to_sleep = ft_atoi(argv[4]);
 	printf("time_to_sleep: %d\n", data->time_to_sleep);
 	data->meal_count = -1;
+	data->everyone_is_full = 0;
 	if (argc == 6)
 	{
 		data->meal_count = ft_atoi(argv[5]);
@@ -57,6 +58,10 @@ int     main(int argc, char *argv[])
 {
 	t_data  data;
 
+	static pthread_mutex_t mutex;
+
+	mutex = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
+	data.mutex = mutex;
 	if (!parser(argc, argv, &data))
 		return (1);
 	if (!init_datas(&data))

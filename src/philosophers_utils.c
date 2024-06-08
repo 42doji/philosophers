@@ -27,6 +27,7 @@ int init_philos(t_data *data)
 		data->phils[i].second_fork = &data->forks[(i + 1) % data->nb_phil];
 		data->phils[i].state = INACTIVE;
 		data->phils[i].data = data;
+		data->phils[i].is_full = 0;
 		if (pthread_mutex_init(&data->phils[i].meal_mutex, NULL))
 		{
 			free_mutexes(data, i - 1);
@@ -51,6 +52,7 @@ void clean_philos(t_data *data)
 		data->phils[i].second_fork = NULL;
 		data->phils[i].state = INACTIVE;
 		data->phils[i].last_meal = -1;
+		data->phils[i].is_full = 0;
 		pthread_mutex_destroy(&data->phils[i].meal_mutex);
 		i++;
 	}
