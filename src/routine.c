@@ -97,16 +97,16 @@ void *philo_life(void *philo)
 	{
 		if (is_dead((t_philo *)philo))
 			break;
-		else if (take_forks((t_philo *)philo))
+		if (take_forks((t_philo *)philo))
 		{
 
 			eating((t_philo *)philo);
 			sleeping((t_philo *)philo);
 		}
 		else
-		{
+			set_philo_state((t_philo *)philo, THINKING);
+		if (p->state == THINKING)
 			thinking((t_philo *)philo);
-		}
 	}
 	print_eat_count((t_philo *)philo);
 	return NULL;
