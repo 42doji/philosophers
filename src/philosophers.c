@@ -30,18 +30,6 @@ void    start_simulation(t_data *data)
 	}
 }
 
-void	check_process_status(t_philo *philo)
-{
-	int i;
-
-	i = 0;
-	while (i < philo->data->nb_phil)
-	{
-		set_philo_state(&philo[i]);
-		i++;
-	}
-}
-
 int	parser(int argc, char *argv[], t_data *data)
 {
 	if (argc < 5 || argc > 6)

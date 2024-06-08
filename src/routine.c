@@ -48,18 +48,43 @@ void thinking(t_philo *philo)
 void dead(t_philo *philo)
 {
 	print_msg(philo, DEAD);
+	set_philo_state(philo, DEAD);
 }
 
-int set_philo_state(t_philo *philo)
+int set_philo_state(t_philo *p, e_state state)
 {
-	if (philo->data->meal_count != -1 && philo->meal_count >= philo->data->meal_count)
-		return 0;
-	if (philo->state == INACTIVE)
+	if (state == INACTIVE)
 	{
-		philo->last_meal = get_time();
-		philo->state = EATING;
+		p->start_time = get_time();
+		p->death_time = p->start_time + ((t_philo *)p)->data->time_to_die;
+		p->state = INACTIVE;
 	}
-	return 1;
+	else if (state == THINKING)
+		p->state = THINKING;
+	else if (state == EATING)
+		p->state = EATING;
+	else if (state == SLEEPING)
+		p->state = SLEEPING;
+	else if (state == DEAD)
+		p->state = DEAD;
+	else
+		return (0);
+	return (1);
+}
+
+int is_dead(t_philo *philo)
+{
+	if (get_time() > philo->death_time)
+	{
+		dead(philo);
+		return (1);
+	}
+	return (0);
+}
+
+void	print_eat_count(t_philo *philo)
+{
+	printf("%d philo ate %d times\n", philo->id, philo->meal_count);
 }
 
 void *philo_life(void *philo)
@@ -67,15 +92,11 @@ void *philo_life(void *philo)
 	t_philo *p;
 
 	p = (t_philo *)philo;
-	p->start_time = get_time();
-	p->death_time = p->start_time + ((t_philo *)philo)->data->time_to_die;
-	while (1)
+	set_philo_state(p, INACTIVE);
+	while (p->state != DEAD && p->data->meal_count != 0)
 	{
-		if (get_time() > p->death_time)
-		{
-			dead((t_philo *)philo);
+		if (is_dead((t_philo *)philo))
 			break;
-		}
 		else if (take_forks((t_philo *)philo))
 		{
 
@@ -87,5 +108,6 @@ void *philo_life(void *philo)
 			thinking((t_philo *)philo);
 		}
 	}
+	print_eat_count((t_philo *)philo);
 	return NULL;
 }

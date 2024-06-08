@@ -19,7 +19,7 @@ typedef enum t_state
 	SLEEPING,
 	DEAD,
 	INACTIVE
-}	t_state;  // TODO: rename t_state to e_state
+}	e_state;  // TODO: rename e_state to e_state
 
 typedef struct s_fork
 {
@@ -39,7 +39,7 @@ typedef struct s_philosopher
 	pthread_t		thread;
 	t_fork			*first_fork;
 	t_fork			*second_fork;
-	t_state			state;
+	e_state			state;
 	t_data			*data;
 	pthread_mutex_t	meal_mutex;
 	pthread_mutex_t print_mutex;
@@ -95,7 +95,7 @@ void	thinking(t_philo *philo);
 void	sleeping(t_philo *philo);
 void	eating(t_philo *philo);
 void	print_msg(t_philo *philo, int state);
-int		set_philo_state(t_philo *philo);
+int set_philo_state(t_philo *philo, e_state state);
 void 	print_msg(t_philo *philo, int state);
 
 /* routine funcs */
