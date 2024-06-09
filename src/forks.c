@@ -1,5 +1,11 @@
 #include "../inc/philosophers.h"
 
+int init_forks(t_data *data);
+t_fork	*get_first_fork(t_philo *philo);
+t_fork	*get_second_fork(t_philo *philo);
+int take_forks(t_philo *philo);
+int drop_forks(t_philo *philo);
+
 int init_forks(t_data *data)
 {
 	int	i;

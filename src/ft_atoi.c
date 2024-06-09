@@ -1,5 +1,8 @@
 #include "../inc/philosophers.h"
 
+int	ft_isspace(char c);
+int ft_atoi(const char *nptr);
+
 int      ft_isspace(char c)
 {
 	return (c == ' ' || c == '\f' || c == '\n' || c == '\r'

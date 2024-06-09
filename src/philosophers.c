@@ -1,5 +1,8 @@
 #include "../inc/philosophers.h"
 
+void	start_simulation(t_data *data);
+int		parser(int argc, char *argv[], t_data *data);
+
 void    start_simulation(t_data *data)
 {
 	int i;

@@ -1,5 +1,7 @@
 #include "../inc/philosophers.h"
 
+int	error_handler(t_data *data, e_error error);
+
 int	error_handler(t_data *data, e_error error)
 {
 	if (error == MALLOC_ERROR)

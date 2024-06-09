@@ -1,5 +1,9 @@
 #include "../inc/philosophers.h"
 
+void	eating(t_philo *philo);
+void	sleeping(t_philo *philo);
+void	thinking(t_philo *philo);
+
 void	eating(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->meal_mutex);
@@ -41,23 +45,6 @@ void	thinking(t_philo *philo)
 		set_philo_state(philo, THINKING);
 		better_sleep(1);
 	}
-}
-
-void	destroy_philosopher(t_philo *p)
-{
-	if (!p)
-		return ;
-	p->id = -1;
-	p->meal_count = -1;
-	p->is_full = 0;
-	p->first_fork = NULL;
-	p->second_fork = NULL;
-	p->state = INACTIVE;
-	p->last_meal = -1;
-	pthread_mutex_destroy(&p->meal_mutex);
-	p->data = NULL;
-	pthread_mutex_destroy(&p->meal_mutex);
-	free(p->thread);
 }
 
 void	*philo_life(void *philo)

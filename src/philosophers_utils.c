@@ -1,5 +1,10 @@
 #include "../inc/philosophers.h"
 
+void	clean_philos(t_data *data);
+void	free_forks(t_data *data, int i);
+void	clean_datas(t_data *data);
+int 	init_philos(t_data *data);
+
 void clean_philos(t_data *data)
 {
 	int i;

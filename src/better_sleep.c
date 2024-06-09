@@ -1,5 +1,7 @@
 #include "../inc/philosophers.h"
 
+void	better_sleep(long time);
+
 void	better_sleep(long time)
 {
 	long	start;

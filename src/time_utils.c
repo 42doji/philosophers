@@ -1,5 +1,7 @@
 #include "../inc/philosophers.h"
 
+long	get_time(void);
+
 long	get_time(void)
 {
 	struct timeval	tv;

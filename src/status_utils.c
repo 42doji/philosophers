@@ -1,5 +1,10 @@
 #include "../inc/philosophers.h"
 
+void	dead(t_philo *philo);
+int		is_dead(t_philo *philo);
+int		is_everyone_full(t_data *data);
+int		set_philo_state(t_philo *p, e_state state);
+
 void	dead(t_philo *philo)
 {
 	print_msg(philo, DEAD);
@@ -64,16 +69,4 @@ int set_philo_state(t_philo *p, e_state state)
 	}
 	pthread_mutex_unlock(&p->data->mutex);
 	return (1);
-}
-
-void	set_philo_is_full(t_philo *philo)
-{
-	if (philo->meal_count >= philo->data->meal_count)
-	{
-		pthread_mutex_lock(&philo->data->mutex);
-		philo->is_full = 1;
-		pthread_mutex_unlock(&philo->data->mutex);
-	}
-	else
-		philo->is_full = 0;
 }
