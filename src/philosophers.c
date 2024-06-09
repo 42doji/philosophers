@@ -8,14 +8,11 @@ void    start_simulation(t_data *data)
 	int i;
 
 	i = 0;
-	if (data->meal_count == 0)
-		return ;
-	else if (data->nb_phil == 1)
+	if (data->nb_phil == 1)
 	{
 		printf("0 1 has taken a fork\n");
 		usleep(data->time_to_die * 1000);
 		printf("%d 1 died\n", data->time_to_die);
-		return ;
 	}
 	else
 	{
@@ -36,7 +33,7 @@ void    start_simulation(t_data *data)
 int		parser(int argc, char *argv[], t_data *data)
 {
 	if (argc < 5 || argc > 6)
-		error_handler(data, ARG_ERROR);
+		return (error_handler(data, ARG_ERROR));
 	data->nb_phil = ft_atoi(argv[1]);
 	printf("philo_count: %d\n", data->nb_phil);
 	data->time_to_die = ft_atoi(argv[2]) + 15;
