@@ -30,7 +30,7 @@ void    start_simulation(t_data *data)
 	}
 }
 
-int	parser(int argc, char *argv[], t_data *data)
+int		parser(int argc, char *argv[], t_data *data)
 {
 	if (argc < 5 || argc > 6)
 		error_handler(data, ARG_ERROR);

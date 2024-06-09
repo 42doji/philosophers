@@ -1,7 +1,6 @@
 #include "../inc/philosophers.h"
 
-
-void eating(t_philo *philo)
+void	eating(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->meal_mutex);
 	philo->last_meal = get_time();
@@ -20,7 +19,7 @@ void eating(t_philo *philo)
 	set_philo_state(philo, SLEEPING);
 }
 
-void sleeping(t_philo *philo)
+void	sleeping(t_philo *philo)
 {
 	if (philo->thought_count > 0)
 		philo->thought_count = 0;
@@ -29,7 +28,7 @@ void sleeping(t_philo *philo)
 	set_philo_state(philo, THINKING);
 }
 
-void thinking(t_philo *philo)
+void	thinking(t_philo *philo)
 {
 	if (take_forks(philo))
 	{
@@ -61,9 +60,9 @@ void	destroy_philosopher(t_philo *p)
 	free(p->thread);
 }
 
-void *philo_life(void *philo)
+void	*philo_life(void *philo)
 {
-	t_philo *p;
+	t_philo	*p;
 
 	p = (t_philo *)philo;
 	set_philo_state(p, INACTIVE);

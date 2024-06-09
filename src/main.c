@@ -9,5 +9,6 @@ int     main(int argc, char *argv[])
 	if (!init_datas(&data))
 		return (1);
 	start_simulation(&data);
+	clean_datas(&data);
 	return (0);
 }

@@ -1,6 +1,5 @@
 #include "../inc/philosophers.h"
 
-
 void	print_eat_count(t_philo *philo)
 {
 	printf("%d philo ate %d times\n", philo->id, philo->meal_count);

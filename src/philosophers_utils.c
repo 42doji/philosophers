@@ -9,7 +9,6 @@ void clean_philos(t_data *data)
 	i = 0;
 	while (i < data->nb_phil)
 	{
-		pthread_join(data->phils[i].thread, NULL);
 		pthread_mutex_destroy(&data->phils[i].meal_mutex);
 		i++;
 	}
@@ -19,8 +18,10 @@ void clean_philos(t_data *data)
 
 void	clean_datas(t_data *data)
 {
-	clean_philos(data);
+	if (!data)
+		return ;
 	clean_forks(data);
+	clean_philos(data);
 }
 
 int init_philos(t_data *data)
@@ -52,17 +53,17 @@ int init_philos(t_data *data)
 
 int init_datas(t_data *data)
 {
-	static pthread_mutex_t mutex;
+	static	pthread_mutex_t mutex;
 
 	mutex = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
 	data->mutex = mutex;
 	if (!init_forks(data))
-		return (0);
+		return (error_handler(data, MALLOC_ERROR));
 	if (!init_philos(data))
 	{
 		free_forks(data, data->nb_phil - 1);
 		free(data->forks);
-		return (0);
+		return (error_handler(data, MALLOC_ERROR));
 	}
 	return (1);
 }

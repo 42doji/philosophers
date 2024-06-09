@@ -1,13 +1,13 @@
 #include "../inc/philosophers.h"
 
-void dead(t_philo *philo)
+void	dead(t_philo *philo)
 {
 	print_msg(philo, DEAD);
 	set_philo_state(philo, DEAD);
 }
 
 
-int is_dead(t_philo *philo)
+int		is_dead(t_philo *philo)
 {
 	if (get_time() - philo->last_meal > philo->data->time_to_die)
 	{
@@ -17,12 +17,13 @@ int is_dead(t_philo *philo)
 	return (0);
 }
 
-int is_everyone_full(t_data *data)
+int		is_everyone_full(t_data *data)
 {
-	int i;
-	int everyone_full = 1;
+	int	i;
+	int	everyone_full;
 
 	i = 0;
+	everyone_full = 1;
 	pthread_mutex_lock(&data->mutex);
 	while (i < data->nb_phil)
 	{
@@ -35,7 +36,7 @@ int is_everyone_full(t_data *data)
 	}
 	data->everyone_is_full = everyone_full;
 	pthread_mutex_unlock(&data->mutex);
-	return everyone_full;
+	return (everyone_full);
 }
 
 int set_philo_state(t_philo *p, e_state state)
@@ -59,10 +60,10 @@ int set_philo_state(t_philo *p, e_state state)
 	else
 	{
 		pthread_mutex_unlock(&p->data->mutex);
-		return 0;
+		return (0);
 	}
 	pthread_mutex_unlock(&p->data->mutex);
-	return 1;
+	return (1);
 }
 
 void	set_philo_is_full(t_philo *philo)
