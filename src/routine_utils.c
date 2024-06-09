@@ -1,5 +1,11 @@
 #include "../inc/philosophers.h"
 
+
+void	print_eat_count(t_philo *philo)
+{
+	printf("%d philo ate %d times\n", philo->id, philo->meal_count);
+}
+
 void print_msg(t_philo *philo, int state)
 {
 	pthread_mutex_lock(&philo->data->mutex);
@@ -16,9 +22,4 @@ void print_msg(t_philo *philo, int state)
 	else if (state == FORK_DROPPED)
 		printf("%ld %d has dropped a fork\n", get_time() - philo->start_time, philo->id);
 	pthread_mutex_unlock(&philo->data->mutex);
-}
-
-void	print_eat_count(t_philo *philo)
-{
-	printf("%d philo ate %d times\n", philo->id, philo->meal_count);
 }

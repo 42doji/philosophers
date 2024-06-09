@@ -1,5 +1,32 @@
 #include "../inc/philosophers.h"
 
+void clean_philos(t_data *data)
+{
+	int i;
+
+	i = 0;
+	while (i < data->nb_phil)
+	{
+		data->phils[i].id = -1;
+		data->phils[i].meal_count = -1;
+		data->phils[i].first_fork = NULL;
+		data->phils[i].second_fork = NULL;
+		data->phils[i].state = INACTIVE;
+		data->phils[i].last_meal = -1;
+		data->phils[i].is_full = 0;
+		pthread_mutex_destroy(&data->phils[i].meal_mutex);
+		i++;
+	}
+	free(data->phils);
+	data->phils = NULL;
+}
+
+void	clean_datas(t_data *data)
+{
+	clean_philos(data);
+	clean_forks(data);
+}
+
 int init_philos(t_data *data)
 {
 	int i;
@@ -26,27 +53,6 @@ int init_philos(t_data *data)
 		i++;
 	}
 	return (1);
-}
-
-void clean_philos(t_data *data)
-{
-	int i;
-
-	i = 0;
-	while (i < data->nb_phil)
-	{
-		data->phils[i].id = -1;
-		data->phils[i].meal_count = -1;
-		data->phils[i].first_fork = NULL;
-		data->phils[i].second_fork = NULL;
-		data->phils[i].state = INACTIVE;
-		data->phils[i].last_meal = -1;
-		data->phils[i].is_full = 0;
-		pthread_mutex_destroy(&data->phils[i].meal_mutex);
-		i++;
-	}
-	free(data->phils);
-	data->phils = NULL;
 }
 
 int init_datas(t_data *data)

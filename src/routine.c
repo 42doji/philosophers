@@ -43,22 +43,6 @@ void thinking(t_philo *philo) {
 	}
 }
 
-void dead(t_philo *philo)
-{
-	print_msg(philo, DEAD);
-	set_philo_state(philo, DEAD);
-}
-
-
-int is_dead(t_philo *philo)
-{
-	if (get_time() - philo->last_meal > philo->data->time_to_die)
-	{
-		dead(philo);
-		return (1);
-	}
-	return (0);
-}
 
 void *philo_life(void *philo)
 {

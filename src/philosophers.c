@@ -36,7 +36,7 @@ int	parser(int argc, char *argv[], t_data *data)
 		return (0);
 	data->nb_phil = ft_atoi(argv[1]);
 	printf("philo_count: %d\n", data->nb_phil);
-	data->time_to_die = ft_atoi(argv[2])  + 15;
+	data->time_to_die = ft_atoi(argv[2]) + 15;
 	printf("time_to_die: %d\n", data->time_to_die) ;
 	data->time_to_eat = ft_atoi(argv[3]);
 	printf("time_to_eat: %d\n", data->time_to_eat);
@@ -54,8 +54,3 @@ int	parser(int argc, char *argv[], t_data *data)
 	return (1);
 }
 
-void	clean_datas(t_data *data)
-{
-	clean_philos(data);
-	clean_forks(data);
-}

@@ -7,7 +7,7 @@ SRC_DIR = ./src
 INC_DIR = ./inc
 INC = $(INC_DIR)/philosophers.h
 SRCS = $(SRC_DIR)/philosophers.c $(SRC_DIR)/philosophers_utils.c \
-        $(SRC_DIR)/forks.c  $(SRC_DIR)/ft_atoi.c $(SRC_DIR)/forks_ii.c \
+        $(SRC_DIR)/forks.c  $(SRC_DIR)/ft_atoi.c \
         $(SRC_DIR)/time_utils.c $(SRC_DIR)/routine.c \
         $(SRC_DIR)/routine_utils.c $(SRC_DIR)/status_utils.c \
         $(SRC_DIR)/better_sleep.c \
