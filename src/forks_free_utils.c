@@ -25,3 +25,14 @@ void	free_forks(t_data *data, int i)
 	}
 	free(data->forks);
 }
+
+int free_mutexes(t_data *data, int i)
+{
+	while (i >= 0)
+	{
+		pthread_mutex_unlock(&data->phils[i].meal_mutex);
+		pthread_mutex_destroy(&data->phils[i].meal_mutex);
+		i--;
+	}
+	return (0);
+}

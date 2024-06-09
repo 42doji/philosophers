@@ -1,16 +1,5 @@
 #include "../inc/philosophers.h"
 
-int free_mutexes(t_data *data, int i)
-{
-	while (i >= 0)
-	{
-		pthread_mutex_unlock(&data->phils[i].meal_mutex);
-		pthread_mutex_destroy(&data->phils[i].meal_mutex);
-		i--;
-	}
-	return (0);
-}
-
 int init_philos(t_data *data)
 {
 	int i;

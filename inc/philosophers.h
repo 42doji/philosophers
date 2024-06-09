@@ -82,6 +82,7 @@ void			free_forks(t_data *data, int i);
 
 /* time utils */
 long			get_time(void);
+void			better_sleep(long time);
 /* time utils */
 
 /* fork funcs */
@@ -105,5 +106,7 @@ int is_dead(t_philo *philo);
 int is_everyone_full(t_data *data);
 /* routine funcs */
 
-
+/* simulation funcs */
+void    start_simulation(t_data *data);
+/* simulation funcs */
 #endif
