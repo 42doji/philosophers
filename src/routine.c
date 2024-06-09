@@ -29,22 +29,15 @@ void sleeping(t_philo *philo)
 	set_philo_state(philo, THINKING);
 }
 
-void thinking(t_philo *philo)
-{
-	if (take_forks(philo))
-	{
+void thinking(t_philo *philo) {
+	if (take_forks(philo)) {
 		eating(philo);
 		sleeping(philo);
-	}
-	else
-	{
-		if (philo->thought_count == 0)
-		{
-			philo->thought_count++;
-			print_msg(philo, THINKING);
-		}
-		better_sleep(10);
+	} else if (philo->thought_count == 0) {
+		philo->thought_count++;
+		print_msg(philo, THINKING);
 		set_philo_state(philo, THINKING);
+		better_sleep(1);
 	}
 }
 
