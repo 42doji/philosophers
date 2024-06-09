@@ -3,6 +3,7 @@
 void	eating(t_philo *philo);
 void	sleeping(t_philo *philo);
 void	thinking(t_philo *philo);
+void	*philo_life(void *philo);
 
 void	eating(t_philo *philo)
 {
