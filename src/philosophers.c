@@ -54,6 +54,12 @@ int	parser(int argc, char *argv[], t_data *data)
 	return (1);
 }
 
+void	clean_datas(t_data *data)
+{
+	clean_philos(data);
+	clean_forks(data);
+}
+
 int     main(int argc, char *argv[])
 {
 	t_data  data;

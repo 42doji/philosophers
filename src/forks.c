@@ -1,13 +1,5 @@
 #include "../inc/philosophers.h"
 
-void	free_forks(t_data *data, int i)
-{
-	while (i >= 0)
-	{
-		pthread_mutex_destroy(&data->forks[i].mutex);
-		i--;
-	}
-}
 int init_forks(t_data *data)
 {
 	int i;
@@ -23,26 +15,12 @@ int init_forks(t_data *data)
 		if (pthread_mutex_init(&data->forks[i].mutex, NULL))
 		{
 			free_forks(data, i - 1);
-			free(data->forks);
 			break;
 		}i++;
 	}
 	return (1);
 }
 
-void	clean_forks(t_data *data)
-{
-	int i;
-
-	i = 0;
-	while (i < data->nb_phil)
-	{
-		data->forks[i].id = -1;
-		data->forks[i].is_taken = 0;
-		pthread_mutex_destroy(&data->forks[i].mutex);
-		i++;
-	}
-}
 
 t_fork	*get_first_fork(t_philo *philo)
 {
