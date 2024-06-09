@@ -51,6 +51,10 @@ void clean_philos(t_data *data)
 
 int init_datas(t_data *data)
 {
+	static pthread_mutex_t mutex;
+
+	mutex = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
+	data->mutex = mutex;
 	if (!init_forks(data))
 		return (0);
 	if (!init_philos(data))

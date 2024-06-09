@@ -6,5 +6,5 @@ void	better_sleep(long time)
 
 	start = get_time();
 	while (get_time() - start < time)
-		usleep(10);
+		usleep(100);
 }
