@@ -4,6 +4,8 @@ void	clean_forks(t_data *data)
 {
 	int i;
 
+	if (!data)
+		return ;
 	i = 0;
 	while (i < data->nb_phil)
 	{
@@ -16,6 +18,8 @@ void	clean_forks(t_data *data)
 
 void	free_forks(t_data *data, int i)
 {
+	if (!data || i < 0)
+		return ;
 	while (i >= 0)
 	{
 		pthread_mutex_destroy(&data->forks[i].mutex);
@@ -24,15 +28,4 @@ void	free_forks(t_data *data, int i)
 		i--;
 	}
 	free(data->forks);
-}
-
-int free_mutexes(t_data *data, int i)
-{
-	while (i >= 0)
-	{
-		pthread_mutex_unlock(&data->phils[i].meal_mutex);
-		pthread_mutex_destroy(&data->phils[i].meal_mutex);
-		i--;
-	}
-	return (0);
 }

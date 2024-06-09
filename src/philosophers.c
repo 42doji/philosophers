@@ -33,7 +33,7 @@ void    start_simulation(t_data *data)
 int	parser(int argc, char *argv[], t_data *data)
 {
 	if (argc < 5 || argc > 6)
-		return (0);
+		error_handler(data, ARG_ERROR);
 	data->nb_phil = ft_atoi(argv[1]);
 	printf("philo_count: %d\n", data->nb_phil);
 	data->time_to_die = ft_atoi(argv[2]) + 15;
@@ -53,4 +53,3 @@ int	parser(int argc, char *argv[], t_data *data)
 		printf("meal_count: 0\n");
 	return (1);
 }
-

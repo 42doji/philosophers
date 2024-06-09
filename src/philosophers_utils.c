@@ -4,16 +4,12 @@ void clean_philos(t_data *data)
 {
 	int i;
 
+	if (!data)
+		return ;
 	i = 0;
 	while (i < data->nb_phil)
 	{
-		data->phils[i].id = -1;
-		data->phils[i].meal_count = -1;
-		data->phils[i].first_fork = NULL;
-		data->phils[i].second_fork = NULL;
-		data->phils[i].state = INACTIVE;
-		data->phils[i].last_meal = -1;
-		data->phils[i].is_full = 0;
+		pthread_join(data->phils[i].thread, NULL);
 		pthread_mutex_destroy(&data->phils[i].meal_mutex);
 		i++;
 	}
@@ -46,7 +42,6 @@ int init_philos(t_data *data)
 		data->phils[i].is_full = 0;
 		if (pthread_mutex_init(&data->phils[i].meal_mutex, NULL))
 		{
-			free_mutexes(data, i - 1);
 			free(data->phils);
 			return (0);
 		}

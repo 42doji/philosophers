@@ -29,7 +29,8 @@ void sleeping(t_philo *philo)
 	set_philo_state(philo, THINKING);
 }
 
-void thinking(t_philo *philo) {
+void thinking(t_philo *philo)
+{
 	if (take_forks(philo))
 	{
 		eating(philo);
@@ -43,10 +44,28 @@ void thinking(t_philo *philo) {
 	}
 }
 
+void	destroy_philosopher(t_philo *p)
+{
+	if (!p)
+		return ;
+	p->id = -1;
+	p->meal_count = -1;
+	p->is_full = 0;
+	p->first_fork = NULL;
+	p->second_fork = NULL;
+	p->state = INACTIVE;
+	p->last_meal = -1;
+	pthread_mutex_destroy(&p->meal_mutex);
+	p->data = NULL;
+	pthread_mutex_destroy(&p->meal_mutex);
+	free(p->thread);
+}
 
 void *philo_life(void *philo)
 {
-	t_philo *p = (t_philo *)philo;
+	t_philo *p;
+
+	p = (t_philo *)philo;
 	set_philo_state(p, INACTIVE);
 	while (1)
 	{
@@ -65,6 +84,5 @@ void *philo_life(void *philo)
 			thinking(p);
 	}
 	print_eat_count(p);
-	return NULL;
+	return (NULL);
 }
-

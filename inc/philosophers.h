@@ -21,6 +21,15 @@ typedef enum t_state
 	INACTIVE
 }	e_state;
 
+typedef enum t_error
+{
+	NO_ERROR,
+	ARG_ERROR,
+	MALLOC_ERROR,
+	THREAD_ERROR,
+	MUTEX_ERROR
+}	e_error;
+
 typedef struct s_fork
 {
 	int				id;
@@ -73,8 +82,6 @@ int 				init_philos(t_data *data);
 /* init utils */
 
 /* free utils */
-// TODO: finish
-int 				free_mutexes(t_data *data, int i);
 void				clean_philos(t_data *data);
 void				clean_forks(t_data *data);
 void				free_forks(t_data *data, int i);
@@ -111,4 +118,9 @@ int 				is_everyone_full(t_data *data);
 void				print_msg(t_philo *philo, int state);
 void				print_eat_count(t_philo *philo);
 /* status utils */
+
+/* error utils */
+void				clean_datas(t_data *data);
+int 				error_handler(t_data *data, e_error error);
+/* error utils */
 #endif
