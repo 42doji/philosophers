@@ -17,23 +17,25 @@ void eating(t_philo *philo)
 	pthread_mutex_unlock(&philo->meal_mutex);
 	better_sleep(philo->data->time_to_eat);
 	drop_forks(philo);
-	philo->state = SLEEPING;
+	set_philo_state(philo, SLEEPING);
 }
 
 void sleeping(t_philo *philo)
 {
-	if (philo->thought_count == 1)
-		print_msg(philo, THINKING);
+	if (philo->thought_count > 0)
+		philo->thought_count = 0;
 	print_msg(philo, SLEEPING);
 	better_sleep(philo->data->time_to_sleep);
 	set_philo_state(philo, THINKING);
 }
 
 void thinking(t_philo *philo) {
-	if (take_forks(philo)) {
+	if (take_forks(philo))
+	{
 		eating(philo);
 		sleeping(philo);
-	} else if (philo->thought_count == 0) {
+	} else if (philo->thought_count == 0)
+	{
 		philo->thought_count++;
 		print_msg(philo, THINKING);
 		set_philo_state(philo, THINKING);
