@@ -51,7 +51,7 @@ typedef struct s_philosopher
 	t_fork			*second_fork;
 	e_state			state;
 	t_data			*data;
-	pthread_mutex_t	meal_mutex;
+	pthread_mutex_t	mutex;
 }	t_philo;
 
 typedef struct s_data
@@ -67,59 +67,32 @@ typedef struct s_data
 	t_fork			*forks;
 }	t_data;
 
-/* parsing utils */
 int					parser(int argc, char *argv[], t_data *data);
 int     			ft_atoi(const char *nptr);
 int					ft_isspace(char c);
-/* parsing utils */
-
-/* init utils */
 int 				init_datas(t_data *data);
 int 				init_forks(t_data *data);
 int 				init_philos(t_data *data);
-
-/* init utils */
-
-/* free utils */
 void				clean_philos(t_data *data);
 void				clean_forks(t_data *data);
 void				free_forks(t_data *data, int i);
-/* free utils */
-
-/* time utils */
 long				get_time(void);
 void				better_sleep(long time);
-/* time utils */
-
-/* fork funcs */
 int					take_forks(t_philo *philo);
 int					drop_forks(t_philo *philo);
 t_fork				*get_first_fork(t_philo *philo);
 t_fork				*get_second_fork(t_philo *philo);
-/* fork funcs */
-
-/* routine funcs */
 void				*philo_life(void *philo);
 void				dead(t_philo *philo);
 void				thinking(t_philo *philo);
 void				sleeping(t_philo *philo);
 void				eating(t_philo *philo);
-/* routine funcs */
-
-/* simulation funcs */
-void    start_simulation(t_data *data);
-/* simulation funcs */
-
-/* status utils */
+void    			start_simulation(t_data *data);
 int					set_philo_state(t_philo *philo, e_state state);
 int 				is_dead(t_philo *philo);
 int 				is_everyone_full(t_data *data);
 void				print_msg(t_philo *philo, int state);
 void				print_eat_count(t_philo *philo);
-/* status utils */
-
-/* error utils */
 void				clean_datas(t_data *data);
 int 				error_handler(t_data *data, e_error error);
-/* error utils */
 #endif

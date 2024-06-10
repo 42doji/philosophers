@@ -11,7 +11,7 @@ int init_forks(t_data *data)
 	int	i;
 
 	if (!data)
-		return (0);
+		return (error_handler(data, ARG_ERROR));
 	data->forks = (t_fork *)malloc(sizeof(t_fork) * data->nb_phil);
 	if (!data->forks)
 		error_handler(data, MALLOC_ERROR);

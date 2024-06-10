@@ -7,7 +7,7 @@ void	*philo_life(void *philo);
 
 void	eating(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->meal_mutex);
+	pthread_mutex_lock(&philo->mutex);
 	philo->last_meal = get_time();
 	philo->death_time = philo->last_meal + philo->data->time_to_die;
 	print_msg(philo, EATING);
@@ -18,7 +18,7 @@ void	eating(t_philo *philo)
 		philo->is_full = 1;
 		pthread_mutex_unlock(&philo->data->mutex);
 	}
-	pthread_mutex_unlock(&philo->meal_mutex);
+	pthread_mutex_unlock(&philo->mutex);
 	better_sleep(philo->data->time_to_eat);
 	drop_forks(philo);
 	set_philo_state(philo, SLEEPING);

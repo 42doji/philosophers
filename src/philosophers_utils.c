@@ -14,7 +14,7 @@ void clean_philos(t_data *data)
 	i = 0;
 	while (i < data->nb_phil)
 	{
-		pthread_mutex_destroy(&data->phils[i].meal_mutex);
+		pthread_mutex_destroy(&data->phils[i].mutex);
 		i++;
 	}
 	free(data->phils);
@@ -46,7 +46,7 @@ int init_philos(t_data *data)
 		data->phils[i].state = INACTIVE;
 		data->phils[i].data = data;
 		data->phils[i].is_full = 0;
-		if (pthread_mutex_init(&data->phils[i].meal_mutex, NULL))
+		if (pthread_mutex_init(&data->phils[i].mutex, NULL))
 		{
 			free(data->phils);
 			return (0);
