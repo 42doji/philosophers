@@ -11,7 +11,6 @@ void	dead(t_philo *philo)
 	set_philo_state(philo, DEAD);
 }
 
-
 int		is_dead(t_philo *philo)
 {
 	if (get_time() - philo->last_meal > philo->data->time_to_die)

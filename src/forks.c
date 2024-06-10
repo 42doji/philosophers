@@ -33,7 +33,7 @@ int init_forks(t_data *data)
 t_fork	*get_first_fork(t_philo *philo)
 {
 	if (!philo)
-		error_handler(philo->data, MALLOC_ERROR);
+		return (NULL);
 	if (!philo->first_fork || !philo->second_fork)
 		error_handler(philo->data, MUTEX_ERROR);
 	if (philo->first_fork->id < philo->second_fork->id)
@@ -44,7 +44,7 @@ t_fork	*get_first_fork(t_philo *philo)
 t_fork	*get_second_fork(t_philo *philo)
 {
 	if (!philo)
-		error_handler(philo->data, MALLOC_ERROR);
+		return (NULL);
 	if (!philo->first_fork || !philo->second_fork)
 		error_handler(philo->data, MUTEX_ERROR);
 	if (philo->first_fork->id < philo->second_fork->id)
