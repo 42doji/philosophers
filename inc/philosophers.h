@@ -112,5 +112,6 @@ int					is_someone_dead(t_data *data);
 void 				*monitoring(void *arg);
 void				create_monitor_thread(void *data);
 void 				check_all_philos_full(t_data *data);
+void				clean_monitor(t_data *data);
 
 #endif

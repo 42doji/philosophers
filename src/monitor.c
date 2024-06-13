@@ -12,8 +12,8 @@ int is_someone_dead(t_data *data)
 		{
 			pthread_mutex_lock(&data->mutex);
 			printf("%ld %d died\n", get_time() - data->phils[i].start_time, data->phils[i].id);
-			set_philo_state(&data->phils[i], DEAD);
 			pthread_mutex_unlock(&data->mutex);
+			set_philo_state(&data->phils[i], DEAD);
 			return (1);
 		}
 		i++;
@@ -37,7 +37,6 @@ void check_all_philos_full(t_data *data)
 	pthread_mutex_lock(&data->mutex);
 	if (full_count == data->nb_phil)
 		data->everyone_is_full = 1;
-	pthread_mutex_unlock(&data->mutex);
 }
 
 
@@ -49,12 +48,12 @@ void	*monitoring(void *arg)
 	start_simulation(data);
 	while (1)
 	{
-		check_all_philos_full(data);
 		if (is_someone_dead(data))
-			break ;
+			break;
+		check_all_philos_full(data);
 		if (data->everyone_is_full && data->meal_count != -1)
 			break ;
-		usleep(10);
+		better_sleep(1);
 	}
 	return (NULL);
 }
@@ -66,5 +65,5 @@ void	create_monitor_thread(void	*arg)
 
 	data = (t_data *)arg;
 	pthread_create(&data->monitor_thread, NULL, monitoring, arg);
-	pthread_detach(data->monitor_thread);
+	pthread_join(data->monitor_thread, NULL);
 }
