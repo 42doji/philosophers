@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   status_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: doji <doji@student.42gyengsan.kr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/12 18:21:14 by doji              #+#    #+#             */
+/*   Updated: 2024/06/12 20:21:40 by doji             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philosophers.h"
 
 void	dead(t_philo *philo);
 int		is_dead(t_philo *philo);
 int		is_everyone_full(t_data *data);
-int		set_philo_state(t_philo *p, e_state state);
+int		set_philo_state(t_philo *p, t_state state);
 
 void	dead(t_philo *philo)
 {
@@ -27,8 +39,8 @@ int		is_everyone_full(t_data *data)
 	int	everyone_full;
 
 	i = 0;
-	everyone_full = 1;
 	pthread_mutex_lock(&data->mutex);
+	everyone_full = 1;
 	while (i < data->nb_phil)
 	{
 		if (!data->phils[i].is_full)
@@ -43,7 +55,7 @@ int		is_everyone_full(t_data *data)
 	return (everyone_full);
 }
 
-int set_philo_state(t_philo *p, e_state state)
+int set_philo_state(t_philo *p, t_state state)
 {
 	pthread_mutex_lock(&p->data->mutex);
 	if (state == INACTIVE)

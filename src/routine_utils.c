@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   routine_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: doji <doji@student.42gyengsan.kr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/12 18:21:12 by doji              #+#    #+#             */
+/*   Updated: 2024/06/12 18:21:13 by doji             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philosophers.h"
 
 void	print_eat_count(t_philo *philo);
@@ -21,7 +33,5 @@ void print_msg(t_philo *philo, int state)
 		printf("%ld %d died\n", get_time() - philo->start_time, philo->id);
 	else if (state == FORK_TAKEN)
 		printf("%ld %d has taken a fork\n", get_time() - philo->start_time, philo->id);
-	else if (state == FORK_DROPPED)
-		printf("%ld %d has dropped a fork\n", get_time() - philo->start_time, philo->id);
 	pthread_mutex_unlock(&philo->data->mutex);
 }

@@ -11,7 +11,8 @@ SRCS = $(SRC_DIR)/philosophers.c $(SRC_DIR)/philosophers_utils.c \
         $(SRC_DIR)/time_utils.c $(SRC_DIR)/routine.c \
         $(SRC_DIR)/routine_utils.c $(SRC_DIR)/status_utils.c \
         $(SRC_DIR)/better_sleep.c \
-        $(SRC_DIR)/forks_free_utils.c $(SRC_DIR)/main.c $(SRC_DIR)/error_handler.c
+        $(SRC_DIR)/forks_free_utils.c $(SRC_DIR)/main.c $(SRC_DIR)/error_handler.c \
+        $(SRC_DIR)/monitor.c
         OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)

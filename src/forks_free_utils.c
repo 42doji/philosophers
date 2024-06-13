@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   forks_free_utils.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: doji <doji@student.42gyengsan.kr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/12 18:20:58 by doji              #+#    #+#             */
+/*   Updated: 2024/06/12 18:20:58 by doji             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philosophers.h"
 
 void	clean_forks(t_data *data);
@@ -5,7 +17,7 @@ void	free_forks(t_data *data, int i);
 
 void	clean_forks(t_data *data)
 {
-	int i;
+	int	i;
 
 	if (!data)
 		return ;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   routine.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: doji <doji@student.42gyengsan.kr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/12 18:21:09 by doji              #+#    #+#             */
+/*   Updated: 2024/06/12 20:24:52 by doji             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philosophers.h"
 
 void	eating(t_philo *philo);
@@ -10,7 +22,6 @@ void	eating(t_philo *philo)
 	pthread_mutex_lock(&philo->mutex);
 	philo->last_meal = get_time();
 	philo->death_time = philo->last_meal + philo->data->time_to_die;
-	print_msg(philo, EATING);
 	philo->meal_count++;
 	if (philo->meal_count >= philo->data->meal_count)
 	{
@@ -21,6 +32,7 @@ void	eating(t_philo *philo)
 	pthread_mutex_unlock(&philo->mutex);
 	better_sleep(philo->data->time_to_eat);
 	drop_forks(philo);
+	print_msg(philo, EATING);
 	set_philo_state(philo, SLEEPING);
 }
 
@@ -56,8 +68,6 @@ void	*philo_life(void *philo)
 	set_philo_state(p, INACTIVE);
 	while (1)
 	{
-		if (is_everyone_full(p->data) && p->data->meal_count != -1)
-			break;
 		if (is_dead(p))
 			break;
 		if (take_forks(p))
@@ -70,6 +80,5 @@ void	*philo_life(void *philo)
 		if (p->state == THINKING)
 			thinking(p);
 	}
-	print_eat_count(p);
 	return (NULL);
 }

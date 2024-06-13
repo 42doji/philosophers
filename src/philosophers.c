@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: doji <doji@student.42gyengsan.kr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/12 18:21:04 by doji              #+#    #+#             */
+/*   Updated: 2024/06/12 18:21:05 by doji             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philosophers.h"
 
 void	start_simulation(t_data *data);
@@ -35,21 +47,13 @@ int		parser(int argc, char *argv[], t_data *data)
 	if (argc < 5 || argc > 6)
 		return (error_handler(data, ARG_ERROR));
 	data->nb_phil = ft_atoi(argv[1]);
-	printf("philo_count: %d\n", data->nb_phil);
 	data->time_to_die = ft_atoi(argv[2]) + 15;
-	printf("time_to_die: %d\n", data->time_to_die) ;
 	data->time_to_eat = ft_atoi(argv[3]);
-	printf("time_to_eat: %d\n", data->time_to_eat);
 	data->time_to_sleep = ft_atoi(argv[4]);
-	printf("time_to_sleep: %d\n", data->time_to_sleep);
 	data->meal_count = -1;
 	data->everyone_is_full = 0;
 	if (argc == 6)
-	{
 		data->meal_count = ft_atoi(argv[5]);
-		printf("meal_count: %d\n", data->meal_count);
-	}
-	else
-		printf("meal_count: 0\n");
+
 	return (1);
 }
