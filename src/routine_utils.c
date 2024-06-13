@@ -17,7 +17,9 @@ void	print_msg(t_philo *philo, int state);
 
 void	print_eat_count(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->data->mutex);
 	printf("%d philo ate %d times\n", philo->id, philo->meal_count);
+	pthread_mutex_unlock(&philo->data->mutex);
 }
 
 void	print_msg(t_philo *philo, int state)

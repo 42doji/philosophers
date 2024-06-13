@@ -69,7 +69,7 @@ void	*philo_life(void *philo)
 
 	p = (t_philo *)philo;
 	set_philo_state(p, INACTIVE);
-	while (1)
+	while (42)
 	{
 		if (p->state == DEAD || p->data->everyone_is_full)
 			break ;
@@ -82,7 +82,7 @@ void	*philo_life(void *philo)
 			set_philo_state(p, THINKING);
 		if (p->state == THINKING)
 			thinking(p);
-		if (p->meal_count >= p->data->meal_count)
+		if (p->meal_count >= p->data->meal_count && p->data->meal_count != -1)
 		{
 			set_philo_state(p, FULL);
 			break ;

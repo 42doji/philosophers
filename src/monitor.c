@@ -22,10 +22,13 @@ int	is_someone_dead(t_data *d)
 		if (get_time() - d->phils[i].last_meal > d->time_to_die)
 		{
 			pthread_mutex_lock(&d->mutex);
-			printf("%ld %d died\n", \
-			get_time() - d->phils[i].start_time, d->phils[i].id);
+			if (d->phils[i].state != DEAD)
+			{
+				printf("%ld %d died\n", \
+				get_time() - d->phils[i].start_time, d->phils[i].id);
+				d->phils[i].state = DEAD;
+			}
 			pthread_mutex_unlock(&d->mutex);
-			set_philo_state(&d->phils[i], DEAD);
 			return (1);
 		}
 		i++;
@@ -47,8 +50,9 @@ void	check_all_philos_full(t_data *data)
 		i++;
 	}
 	pthread_mutex_lock(&data->mutex);
-	if (full_count == data->nb_phil)
+	if (full_count == data->nb_phil && data->meal_count != -1)
 		data->everyone_is_full = 1;
+	pthread_mutex_unlock(&data->mutex);
 }
 
 void	*monitoring(void *arg)
@@ -57,14 +61,14 @@ void	*monitoring(void *arg)
 
 	data = (t_data *)arg;
 	start_simulation(data);
-	while (1)
+	while (42)
 	{
-		if (is_someone_dead(data))
-			break ;
 		check_all_philos_full(data);
 		if (data->everyone_is_full && data->meal_count != -1)
 			break ;
-		better_sleep(1);
+		if (is_someone_dead(data))
+			break ;
+		usleep(500);
 	}
 	return (NULL);
 }

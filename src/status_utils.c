@@ -23,11 +23,11 @@ void	dead(t_philo *philo)
 	set_philo_state(philo, DEAD);
 }
 
-int	is_dead(t_philo *philo)
+int	is_dead(t_philo *p)
 {
-	if (get_time() - philo->last_meal > philo->data->time_to_die)
+	if (p->state != FULL && get_time() - p->last_meal > p->data->time_to_die)
 	{
-		dead(philo);
+		dead(p);
 		return (1);
 	}
 	return (0);
@@ -73,6 +73,8 @@ int	set_philo_state(t_philo *p, t_state state)
 		p->state = SLEEPING;
 	else if (state == DEAD)
 		p->state = DEAD;
+	else if (state == FULL)
+		p->state = FULL;
 	else
 	{
 		pthread_mutex_unlock(&p->data->mutex);

@@ -23,8 +23,8 @@ void	start_simulation(t_data *d)
 	if (d->nb_phil == 1)
 	{
 		printf("0 1 has taken a fork\n");
+		d->phils[i].start_time = get_time();
 		usleep(d->time_to_die * 1000);
-		printf("%d 1 died\n", d->time_to_die);
 	}
 	else
 	{
@@ -36,7 +36,7 @@ void	start_simulation(t_data *d)
 		i = 0;
 		while (i < d->nb_phil)
 		{
-			pthread_join(data->phils[i].thread, NULL);
+			pthread_join(d->phils[i].thread, NULL);
 			i++;
 		}
 	}
