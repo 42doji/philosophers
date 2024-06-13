@@ -55,6 +55,7 @@ typedef struct s_philosopher
 	int				is_full;
 	int				meal_count;
 	int				thought_count;
+	int 			start_signal;
 	long			start_time;
 	long			death_time;
 	long			last_meal;
@@ -74,6 +75,8 @@ typedef struct s_data
 	int				time_to_sleep;
 	int				meal_count;
 	int				everyone_is_full;
+	int 			philo_created;
+	int 			finished_simulation;
 	pthread_mutex_t	mutex;
 	pthread_t		monitor_thread;
 	t_philo			*phils;
@@ -103,14 +106,12 @@ void				eating(t_philo *philo);
 void				start_simulation(t_data *data);
 int					set_philo_state(t_philo *philo, t_state state);
 int					is_dead(t_philo *philo);
-int					is_everyone_full(t_data *data);
 void				print_msg(t_philo *philo, int state);
 void				print_eat_count(t_philo *philo);
 void				clean_datas(t_data *data);
 int					error_handler(t_data *data, t_error error);
 int					is_someone_dead(t_data *data);
 void				*monitoring(void *arg);
-void				create_monitor_thread(void *data);
 void				check_all_philos_full(t_data *data);
 void				clean_monitor(t_data *data);
 

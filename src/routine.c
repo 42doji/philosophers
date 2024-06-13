@@ -63,13 +63,27 @@ void	thinking(t_philo *philo)
 	}
 }
 
+void	philo_idle(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->mutex);
+	philo->data->philo_created++;
+	pthread_mutex_unlock(&philo->mutex);
+	while (1)
+	{
+		if (philo->start_signal)
+			break ;
+		usleep(100);
+	}
+}
+
 void	*philo_life(void *philo)
 {
 	t_philo	*p;
 
 	p = (t_philo *)philo;
+	philo_idle(p);
 	set_philo_state(p, INACTIVE);
-	while (42)
+	while (p->data->finished_simulation == 0)
 	{
 		if (p->state == DEAD || p->data->everyone_is_full)
 			break ;

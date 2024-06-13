@@ -25,6 +25,8 @@ void	dead(t_philo *philo)
 
 int	is_dead(t_philo *p)
 {
+	if (p->state == INACTIVE)
+		return (0);
 	if (p->state != FULL && get_time() - p->last_meal > p->data->time_to_die)
 	{
 		dead(p);
@@ -33,27 +35,6 @@ int	is_dead(t_philo *p)
 	return (0);
 }
 
-int	is_everyone_full(t_data *data)
-{
-	int	i;
-	int	everyone_full;
-
-	i = 0;
-	pthread_mutex_lock(&data->mutex);
-	everyone_full = 1;
-	while (i < data->nb_phil)
-	{
-		if (!data->phils[i].is_full)
-		{
-			everyone_full = 0;
-			break ;
-		}
-		i++;
-	}
-	data->everyone_is_full = everyone_full;
-	pthread_mutex_unlock(&data->mutex);
-	return (everyone_full);
-}
 
 int	set_philo_state(t_philo *p, t_state state)
 {

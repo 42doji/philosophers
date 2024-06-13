@@ -67,6 +67,7 @@ int init_philos(t_data *data)
 		data->phils[i].data = data;
 		data->phils[i].is_full = 0;
 		data->phils[i].thought_count = 0;
+		data->phils[i].start_signal = 0;
 		if (pthread_mutex_init(&data->phils[i].mutex, NULL))
 		{
 			free(data->phils);
