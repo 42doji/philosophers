@@ -75,7 +75,7 @@ typedef struct s_data
 	int				meal_count;
 	int				everyone_is_full;
 	pthread_mutex_t	mutex;
-	pthread_t 		monitor_thread;
+	pthread_t		monitor_thread;
 	t_philo			*phils;
 	t_fork			*forks;
 }	t_data;
@@ -109,9 +109,9 @@ void				print_eat_count(t_philo *philo);
 void				clean_datas(t_data *data);
 int					error_handler(t_data *data, t_error error);
 int					is_someone_dead(t_data *data);
-void 				*monitoring(void *arg);
+void				*monitoring(void *arg);
 void				create_monitor_thread(void *data);
-void 				check_all_philos_full(t_data *data);
+void				check_all_philos_full(t_data *data);
 void				clean_monitor(t_data *data);
 
 #endif

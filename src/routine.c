@@ -53,7 +53,8 @@ void	thinking(t_philo *philo)
 	{
 		eating(philo);
 		sleeping(philo);
-	} else if (philo->thought_count == 0)
+	}
+	else if (philo->thought_count == 0)
 	{
 		philo->thought_count++;
 		print_msg(philo, THINKING);
@@ -71,7 +72,7 @@ void	*philo_life(void *philo)
 	while (1)
 	{
 		if (p->state == DEAD || p->data->everyone_is_full)
-			break;
+			break ;
 		if (p->state == EATING && take_forks(p))
 		{
 			eating(p);
@@ -84,7 +85,7 @@ void	*philo_life(void *philo)
 		if (p->meal_count >= p->data->meal_count)
 		{
 			set_philo_state(p, FULL);
-			break;
+			break ;
 		}
 	}
 	print_eat_count(p);

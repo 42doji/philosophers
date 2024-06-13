@@ -12,17 +12,17 @@
 
 #include "../inc/philosophers.h"
 
-void clean_philos(t_data *data);
-void free_forks(t_data *data, int i);
-void clean_datas(t_data *data);
-int init_philos(t_data *data);
+void	clean_philos(t_data *data);
+void	free_forks(t_data *data, int i);
+void	clean_datas(t_data *data);
+int		init_philos(t_data *data);
 
-void clean_philos(t_data *data)
+void	clean_philos(t_data *data)
 {
-	int i;
+	int	i;
 
 	if (!data)
-		return;
+		return ;
 	i = 0;
 	while (i < data->nb_phil)
 	{
@@ -33,25 +33,25 @@ void clean_philos(t_data *data)
 	data->phils = NULL;
 }
 
-void clean_monitor(t_data *data)
+void	clean_monitor(t_data *data)
 {
 	if (!data)
-		return;
+		return ;
 	pthread_mutex_destroy(&data->mutex);
 }
 
-void clean_datas(t_data *data)
+void	clean_datas(t_data *data)
 {
 	if (!data)
-		return;
+		return ;
 	clean_forks(data);
 	clean_monitor(data);
 	clean_philos(data);
 }
 
-int init_philos(t_data *data)
+int	init_philos(t_data *data)
 {
-	int i;
+	int	i;
 
 	data->phils = (t_philo *)malloc(sizeof(t_philo) * data->nb_phil);
 	if (!data->phils)
@@ -77,9 +77,9 @@ int init_philos(t_data *data)
 	return (1);
 }
 
-int init_datas(t_data *data)
+int	init_datas(t_data *data)
 {
-	static pthread_mutex_t mutex;
+	static pthread_mutex_t	mutex;
 
 	mutex = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
 	data->mutex = mutex;

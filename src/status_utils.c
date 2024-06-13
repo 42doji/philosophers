@@ -23,7 +23,7 @@ void	dead(t_philo *philo)
 	set_philo_state(philo, DEAD);
 }
 
-int		is_dead(t_philo *philo)
+int	is_dead(t_philo *philo)
 {
 	if (get_time() - philo->last_meal > philo->data->time_to_die)
 	{
@@ -33,7 +33,7 @@ int		is_dead(t_philo *philo)
 	return (0);
 }
 
-int		is_everyone_full(t_data *data)
+int	is_everyone_full(t_data *data)
 {
 	int	i;
 	int	everyone_full;
@@ -46,7 +46,7 @@ int		is_everyone_full(t_data *data)
 		if (!data->phils[i].is_full)
 		{
 			everyone_full = 0;
-			break;
+			break ;
 		}
 		i++;
 	}
@@ -55,7 +55,7 @@ int		is_everyone_full(t_data *data)
 	return (everyone_full);
 }
 
-int set_philo_state(t_philo *p, t_state state)
+int	set_philo_state(t_philo *p, t_state state)
 {
 	pthread_mutex_lock(&p->data->mutex);
 	if (state == INACTIVE)

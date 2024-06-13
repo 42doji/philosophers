@@ -1,19 +1,19 @@
 #include "../inc/philosophers.h"
 
-int is_someone_dead(t_data *data)
+int	is_someone_dead(t_data *d)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while (i < data->nb_phil)
+	while (i < d->nb_phil)
 	{
-
-		if (get_time() - data->phils[i].last_meal > data->time_to_die)
+		if (get_time() - d->phils[i].last_meal > d->time_to_die)
 		{
-			pthread_mutex_lock(&data->mutex);
-			printf("%ld %d died\n", get_time() - data->phils[i].start_time, data->phils[i].id);
-			pthread_mutex_unlock(&data->mutex);
-			set_philo_state(&data->phils[i], DEAD);
+			pthread_mutex_lock(&d->mutex);
+			printf("%ld %d died\n", \
+			get_time() - d->phils[i].start_time, d->phils[i].id);
+			pthread_mutex_unlock(&d->mutex);
+			set_philo_state(&d->phils[i], DEAD);
 			return (1);
 		}
 		i++;
@@ -21,10 +21,10 @@ int is_someone_dead(t_data *data)
 	return (0);
 }
 
-void check_all_philos_full(t_data *data)
+void	check_all_philos_full(t_data *data)
 {
-	int i;
-	int full_count;
+	int	i;
+	int	full_count;
 
 	i = 0;
 	full_count = 0;
@@ -39,17 +39,16 @@ void check_all_philos_full(t_data *data)
 		data->everyone_is_full = 1;
 }
 
-
 void	*monitoring(void *arg)
 {
-	t_data *data;
+	t_data	*data;
 
 	data = (t_data *)arg;
 	start_simulation(data);
 	while (1)
 	{
 		if (is_someone_dead(data))
-			break;
+			break ;
 		check_all_philos_full(data);
 		if (data->everyone_is_full && data->meal_count != -1)
 			break ;
@@ -58,10 +57,9 @@ void	*monitoring(void *arg)
 	return (NULL);
 }
 
-
 void	create_monitor_thread(void	*arg)
 {
-	t_data *data;
+	t_data	*data;
 
 	data = (t_data *)arg;
 	pthread_create(&data->monitor_thread, NULL, monitoring, arg);
