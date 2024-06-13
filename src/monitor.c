@@ -60,7 +60,6 @@ void	*monitoring(void *arg)
 	t_data	*data;
 
 	data = (t_data *)arg;
-	start_simulation(data);
 	while (42)
 	{
 		check_all_philos_full(data);

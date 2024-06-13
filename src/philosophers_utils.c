@@ -40,7 +40,7 @@ void	clean_monitor(t_data *data)
 	pthread_mutex_destroy(&data->mutex);
 }
 
-void	clean_datas(t_data *data)
+void clean_datas(t_data *data)
 {
 	if (!data)
 		return ;
@@ -49,11 +49,11 @@ void	clean_datas(t_data *data)
 	clean_philos(data);
 }
 
-int	init_philos(t_data *data)
+int init_philos(t_data *data)
 {
-	int	i;
+	int i;
 
-	data->phils = (t_philo *)malloc(sizeof(t_philo) * data->nb_phil);
+	data->phils = (t_philo *)calloc(data->nb_phil, sizeof(t_philo));
 	if (!data->phils)
 		return (0);
 	i = 0;
@@ -77,18 +77,22 @@ int	init_philos(t_data *data)
 	return (1);
 }
 
-int	init_datas(t_data *data)
+
+int init_datas(t_data *data)
 {
-	static pthread_mutex_t	mutex;
+	static pthread_mutex_t mutex;
 
 	mutex = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
 	data->mutex = mutex;
 	if (!init_forks(data))
+	{
+		clean_datas(data);
 		return (error_handler(data, MALLOC_ERROR));
+	}
 	if (!init_philos(data))
 	{
 		free_forks(data, data->nb_phil - 1);
-		free(data->forks);
+		clean_datas(data);
 		return (error_handler(data, MALLOC_ERROR));
 	}
 	return (1);

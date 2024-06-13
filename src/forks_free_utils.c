@@ -15,20 +15,20 @@
 void	clean_forks(t_data *data);
 void	free_forks(t_data *data, int i);
 
-void	clean_forks(t_data *data)
+void clean_forks(t_data *data)
 {
-	int	i;
+	int i;
 
 	if (!data)
 		return ;
 	i = 0;
 	while (i < data->nb_phil)
 	{
-		data->forks[i].id = -1;
-		data->forks[i].is_taken = 0;
 		pthread_mutex_destroy(&data->forks[i].mutex);
 		i++;
 	}
+	free(data->forks);
+	data->forks = NULL;
 }
 
 void	free_forks(t_data *data, int i)

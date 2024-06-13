@@ -20,7 +20,8 @@ int	main(int argc, char *argv[])
 		return (1);
 	if (!init_datas(&data))
 		return (1);
-	monitoring(&data);
+	start_simulation(&data);
+	create_monitor_thread(&data);
 	clean_datas(&data);
 	return (0);
 }

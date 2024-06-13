@@ -63,7 +63,7 @@ int	set_philo_state(t_philo *p, t_state state)
 		p->start_time = get_time();
 		p->last_meal = p->start_time;
 		p->death_time = p->start_time + p->data->time_to_die;
-		p->state = INACTIVE;
+		p->state = EATING;
 	}
 	else if (state == THINKING)
 		p->state = THINKING;
