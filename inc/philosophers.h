@@ -29,7 +29,8 @@ typedef enum t_state
 	FORK_DROPPED,
 	SLEEPING,
 	DEAD,
-	INACTIVE
+	INACTIVE,
+	FULL
 }	t_state;
 
 typedef enum t_error
@@ -110,5 +111,6 @@ int					error_handler(t_data *data, t_error error);
 int					is_someone_dead(t_data *data);
 void 				*monitoring(void *arg);
 void				create_monitor_thread(void *data);
+void 				check_all_philos_full(t_data *data);
 
 #endif

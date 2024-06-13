@@ -47,7 +47,7 @@ int		parser(int argc, char *argv[], t_data *data)
 	if (argc < 5 || argc > 6)
 		return (error_handler(data, ARG_ERROR));
 	data->nb_phil = ft_atoi(argv[1]);
-	data->time_to_die = ft_atoi(argv[2]) + 15;
+	data->time_to_die = ft_atoi(argv[2]) + 5;
 	data->time_to_eat = ft_atoi(argv[3]);
 	data->time_to_sleep = ft_atoi(argv[4]);
 	data->meal_count = -1;
