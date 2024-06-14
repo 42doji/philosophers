@@ -7,8 +7,16 @@ int 	init_philos(t_data *data);
 
 void clean_philos(t_data *data)
 {
+	int i;
+
 	if (!data)
 		return ;
+	i = 0;
+	while (i < data->nb_phil)
+	{
+		free_philo_mutexes(&data->phils[i]);
+		i++;
+	}
 	free(data->phils);
 	data->phils = NULL;
 }
@@ -42,6 +50,7 @@ int init_philos(t_data *data)
 		data->phils[i].data = data;
 		data->phils[i].is_full = 0;
 		data->phils[i].thought_count = 0;
+		init_philo_mutexes(&data->phils[i]);
 		i++;
 	}
 	return (1);

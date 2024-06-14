@@ -38,9 +38,12 @@ typedef struct s_fork
 typedef struct s_philosopher
 {
 	pthread_t		thread;
+	int				id;
+	t_data			*data;
+	e_state			state;
 	t_fork			*first_fork;
 	t_fork			*second_fork;
-	int				id;
+	pthread_mutex_t *state_mutex;
 	int				meal_count;
 	pthread_mutex_t *meal_count_mutex;
 	int 			is_full;
@@ -51,9 +54,7 @@ typedef struct s_philosopher
 	pthread_mutex_t *start_time_mutex;
 	long			last_meal;
 	pthread_mutex_t *last_meal_mutex;
-	e_state			state;
-	pthread_mutex_t *state_mutex;
-	t_data			*data;
+	pthread_mutex_t *print_mutex;
 }	t_philo;
 
 typedef struct s_data
@@ -122,6 +123,8 @@ int					get_time_to_die(t_data *data);
 int					get_nb_phils(t_data *data);
 int					is_simulation_over(t_philo *p);
 int 				is_infinite_meals(t_data *data);
+void				init_philo_mutexes(t_philo *philo);
+void				free_philo_mutexes(t_philo *philo);
 
 
 #endif
