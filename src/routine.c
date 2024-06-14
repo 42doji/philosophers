@@ -7,19 +7,16 @@ void	*philo_life(void *philo);
 
 void	eating(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->mutex);
 	philo->last_meal = get_time();
-	philo->death_time = philo->last_meal + philo->data->time_to_die;
 	print_msg(philo, EATING);
 	philo->meal_count++;
 	if (philo->meal_count >= philo->data->meal_count)
 	{
-		pthread_mutex_lock(&philo->data->mutex);
+		pthread_mutex_lock(&philo->data->print_mtx);
 		philo->is_full = 1;
-		pthread_mutex_unlock(&philo->data->mutex);
+		pthread_mutex_unlock(&philo->data->print_mtx);
 	}
-	pthread_mutex_unlock(&philo->mutex);
-	better_sleep(philo->data->time_to_eat);
+	better_sleep(philo->data->time_to_eat );
 	drop_forks(philo);
 	set_philo_state(philo, SLEEPING);
 }
@@ -39,13 +36,23 @@ void	thinking(t_philo *philo)
 	{
 		eating(philo);
 		sleeping(philo);
-	} else if (philo->thought_count == 0)
+	}
+	else if (philo->thought_count == 0)
 	{
 		philo->thought_count++;
 		print_msg(philo, THINKING);
 		set_philo_state(philo, THINKING);
-		better_sleep(1);
+		better_sleep(1000);
 	}
+}
+
+int is_simulation_over(t_philo *p)
+{
+	if (is_someone_dead(p->data))
+		return (1);
+	if (is_all_ate(p->data) && !is_infinite_meals(p->data))
+		return (1);
+	return (0);
 }
 
 void	*philo_life(void *philo)
@@ -54,11 +61,11 @@ void	*philo_life(void *philo)
 
 	p = (t_philo *)philo;
 	set_philo_state(p, INACTIVE);
-	while (1)
+	while (42)
 	{
-		if (is_everyone_full(p->data) && p->data->meal_count != -1)
-			break;
 		if (is_dead(p))
+			break;
+		if (is_everyone_full(p->data) && p->data->meal_count != -1)
 			break;
 		if (take_forks(p))
 		{

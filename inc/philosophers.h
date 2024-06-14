@@ -22,7 +22,6 @@ typedef enum t_state
 
 typedef enum t_error
 {
-	NO_ERROR,
 	ARG_ERROR,
 	MALLOC_ERROR,
 	THREAD_ERROR,
@@ -32,39 +31,52 @@ typedef enum t_error
 typedef struct s_fork
 {
 	int				id;
-	int 			is_taken;
 	pthread_mutex_t	mutex;
-
 }	t_fork;
 
+// TODO: Add mutexes for each variable in the t_philosopher struct
 typedef struct s_philosopher
 {
-	int				id;
-	int 			is_full;
-	int				meal_count;
-	int 			thought_count;
-	long 			start_time;
-	long			death_time;
-	long			last_meal;
 	pthread_t		thread;
 	t_fork			*first_fork;
 	t_fork			*second_fork;
+	int				id;
+	int				meal_count;
+	pthread_mutex_t *meal_count_mutex;
+	int 			is_full;
+	pthread_mutex_t *is_full_mutex;
+	int 			thought_count;
+	pthread_mutex_t *thought_count_mutex;
+	long 			start_time;
+	pthread_mutex_t *start_time_mutex;
+	long			last_meal;
+	pthread_mutex_t *last_meal_mutex;
 	e_state			state;
+	pthread_mutex_t *state_mutex;
 	t_data			*data;
-	pthread_mutex_t	mutex;
 }	t_philo;
 
 typedef struct s_data
 {
-	int				nb_phil;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				meal_count;
-	int 			everyone_is_full;
-	pthread_mutex_t mutex;
 	t_philo			*phils;
 	t_fork			*forks;
+	int				nb_phil;
+	pthread_mutex_t *nb_phil_mutex;
+	int				time_to_die;
+	pthread_mutex_t *time_to_die_mutex;
+	int				time_to_eat;
+	pthread_mutex_t *time_to_eat_mutex;
+	int				time_to_sleep;
+	pthread_mutex_t *time_to_sleep_mutex;
+	int				meal_count;
+	pthread_mutex_t *meal_count_mutex;
+	int 			fulled_philo_count;
+	pthread_mutex_t *all_ate_mutex;
+	int 			everyone_ate;
+	pthread_mutex_t	*everyone_ate_mtx;
+	int 			someone_is_dead;
+	pthread_mutex_t	*dead_mutex;
+	pthread_mutex_t *print_mutex;
 }	t_data;
 
 int					parser(int argc, char *argv[], t_data *data);
@@ -95,4 +107,21 @@ void				print_msg(t_philo *philo, int state);
 void				print_eat_count(t_philo *philo);
 void				clean_datas(t_data *data);
 int 				error_handler(t_data *data, e_error error);
+void				init_data_mutexes(t_data *data);
+void				free_data_mutexes(t_data *data);
+void				set_meal_count(t_data *data);
+void				set_all_ate(t_data *data);
+void				set_dead(t_data *data);
+void				init_data_attr(t_data *data);
+int					is_someone_dead(t_data *data);
+int					is_all_ate(t_data *data);
+int					get_meal_count(t_data *data);
+int					get_time_to_sleep(t_data *data);
+int					get_time_to_eat(t_data *data);
+int					get_time_to_die(t_data *data);
+int					get_nb_phils(t_data *data);
+int					is_simulation_over(t_philo *p);
+int 				is_infinite_meals(t_data *data);
+
+
 #endif
