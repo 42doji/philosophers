@@ -8,7 +8,10 @@ int     main(int argc, char *argv[])
 		return (1);
 	if (!init_datas(&data))
 		return (1);
-	start_simulation(&data);
+	if (is_infinite_meals(&data))
+		start_simulation1(&data);
+	else
+		start_simulation2(&data);
 	clean_datas(&data);
 	return (0);
 }

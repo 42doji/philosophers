@@ -45,7 +45,9 @@ int is_full(t_philo *philo)
 
 	philo_eat_count = get_philo_eat_count(philo);
 	total_eat_count = get_meal_count(philo->data);
-	if (philo_eat_count >= total_eat_count)
+	if (is_infinite_meals(philo->data))
+		return (0);
+	else if (philo_eat_count >= total_eat_count)
 	{
 		set_philo_is_full(philo);
 		set_philo_state(philo, FULL);

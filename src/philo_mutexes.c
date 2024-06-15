@@ -20,38 +20,18 @@ void init_philo_mutexes(t_philo *philo)
 
 void free_philo_mutexes(t_philo *philo)
 {
-	if (philo->meal_count_mutex) {
-		pthread_mutex_destroy(philo->meal_count_mutex);
-		free(philo->meal_count_mutex);
-	}
-
-	if (philo->is_full_mutex) {
-		pthread_mutex_destroy(philo->is_full_mutex);
-		free(philo->is_full_mutex);
-	}
-
-	if (philo->thought_count_mutex) {
-		pthread_mutex_destroy(philo->thought_count_mutex);
-		free(philo->thought_count_mutex);
-	}
-
-	if (philo->start_time_mutex) {
-		pthread_mutex_destroy(philo->start_time_mutex);
-		free(philo->start_time_mutex);
-	}
-
-	if (philo->last_meal_mutex) {
-		pthread_mutex_destroy(philo->last_meal_mutex);
-		free(philo->last_meal_mutex);
-	}
-
-	if (philo->state_mutex) {
-		pthread_mutex_destroy(philo->state_mutex);
-		free(philo->state_mutex);
-	}
-
-	if (philo->print_mutex) {
-		pthread_mutex_destroy(philo->print_mutex);
-		free(philo->print_mutex);
-	}
+	pthread_mutex_destroy(philo->meal_count_mutex);
+	free(philo->meal_count_mutex);
+	pthread_mutex_destroy(philo->is_full_mutex);
+	free(philo->is_full_mutex);
+	pthread_mutex_destroy(philo->thought_count_mutex);
+	free(philo->thought_count_mutex);
+	pthread_mutex_destroy(philo->start_time_mutex);
+	free(philo->start_time_mutex);
+	pthread_mutex_destroy(philo->last_meal_mutex);
+	free(philo->last_meal_mutex);
+	pthread_mutex_destroy(philo->state_mutex);
+	free(philo->state_mutex);
+	pthread_mutex_destroy(philo->print_mutex);
+	free(philo->print_mutex);
 }
