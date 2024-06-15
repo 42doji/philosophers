@@ -124,7 +124,7 @@ int					get_nb_phils(t_data *data);
 int					is_simulation_over1(t_philo *p);
 int					is_simulation_over2(t_philo *p);
 int 				is_infinite_meals(t_data *data);
-void				init_philo_mutexes(t_philo *philo);
+void				init_philo_mutexes(t_philo *p);
 void				free_philo_mutexes(t_philo *philo);
 
 e_state				get_state(t_philo *philo);
@@ -140,9 +140,12 @@ void	set_philo_is_full(t_philo *philo);
 void	init_philo_state(t_philo *philo, e_state state);
 void	set_philo_state(t_philo *philo, e_state state);
 int 	get_is_full(t_philo *philo);
-void init_philo_mutexes(t_philo *philo);
+void init_philo_mutexes(t_philo *p);
 void	set_one_dead(t_data *data);
 void	set_last_meal(t_philo *philo);
 void	set_start_time(t_philo *philo);
+void	allocate_philo_mutexes(t_philo *philo);
+void set_philo_mutexes(t_data *data);
+
 
 #endif

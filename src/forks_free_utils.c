@@ -16,6 +16,8 @@ void	clean_forks(t_data *data)
 		pthread_mutex_destroy(&data->forks[i].mutex);
 		i++;
 	}
+	free(data->forks);
+	data->forks = NULL;
 }
 
 void	free_forks(t_data *data, int i)
