@@ -60,10 +60,6 @@ int init_philos(t_data *data)
 
 void	init_data_attr(t_data *data)
 {
-	data->time_to_die = 0;
-	data->time_to_eat = 0;
-	data->time_to_sleep = 0;
-	data->meal_count = 0;
 	data->fulled_philo_count = 0;
 	data->someone_is_dead = 0;
 }

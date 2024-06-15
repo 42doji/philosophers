@@ -2,14 +2,19 @@
 
 void	better_sleep(long time);
 
-void better_sleep(long sleep_time)
+void better_sleep(long milliseconds)
 {
-	long start_time;
+	struct timeval	tv;
+	long			start_time;
+	long			time;
 
-	start_time = get_time();
-	while ((get_time() - start_time) < sleep_time)
+	gettimeofday(&tv, NULL);
+	start_time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+	time = start_time;
+	while (time < start_time + milliseconds)
 	{
-		printf("get_time() - start_time: %ld\n", get_time() - start_time);
-		usleep(	(sleep_time - (get_time() - start_time)) * 0.5);
+		usleep(100);
+		gettimeofday(&tv, NULL);
+		time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
 	}
 }
