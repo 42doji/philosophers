@@ -126,5 +126,4 @@ int 				is_infinite_meals(t_data *data);
 void				init_philo_mutexes(t_philo *philo);
 void				free_philo_mutexes(t_philo *philo);
 
-
 #endif

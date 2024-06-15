@@ -12,7 +12,7 @@ void	print_eat_count(t_philo *philo)
 
 void print_msg(t_philo *philo, int state)
 {
-	pthread_mutex_lock(philo->data->print_mutex);
+	pthread_mutex_lock(philo->print_mutex);
 	if (state == EATING)
 		printf("%ld %d is eating\n", get_time() - philo->start_time, philo->id);
 	else if (state == SLEEPING)
@@ -25,5 +25,5 @@ void print_msg(t_philo *philo, int state)
 		printf("%ld %d has taken a fork\n", get_time() - philo->start_time, philo->id);
 	else if (state == FORK_DROPPED)
 		printf("%ld %d has dropped a fork\n", get_time() - philo->start_time, philo->id);
-	pthread_mutex_unlock(philo->data->print_mutex);
+	pthread_mutex_unlock(philo->print_mutex);
 }

@@ -12,9 +12,9 @@ void	eating(t_philo *philo)
 	philo->meal_count++;
 	if (philo->meal_count >= philo->data->meal_count)
 	{
-		pthread_mutex_lock(&philo->data->print_mtx);
+		pthread_mutex_lock(philo->print_mutex);
 		philo->is_full = 1;
-		pthread_mutex_unlock(&philo->data->print_mtx);
+		pthread_mutex_unlock(philo->print_mutex);
 	}
 	better_sleep(philo->data->time_to_eat );
 	drop_forks(philo);
