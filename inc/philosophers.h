@@ -17,6 +17,7 @@ typedef enum t_state
 	FORK_DROPPED,
 	SLEEPING,
 	DEAD,
+	FULL,
 	INACTIVE
 }	e_state;
 
@@ -34,7 +35,6 @@ typedef struct s_fork
 	pthread_mutex_t	mutex;
 }	t_fork;
 
-// TODO: Add mutexes for each variable in the t_philosopher struct
 typedef struct s_philosopher
 {
 	pthread_t		thread;
@@ -43,17 +43,17 @@ typedef struct s_philosopher
 	e_state			state;
 	t_fork			*first_fork;
 	t_fork			*second_fork;
-	pthread_mutex_t *state_mutex;
 	int				meal_count;
-	pthread_mutex_t *meal_count_mutex;
 	int 			is_full;
-	pthread_mutex_t *is_full_mutex;
 	int 			thought_count;
-	pthread_mutex_t *thought_count_mutex;
 	long 			start_time;
-	pthread_mutex_t *start_time_mutex;
 	long			last_meal_time;
+	pthread_mutex_t *meal_count_mutex;
+	pthread_mutex_t *is_full_mutex;
+	pthread_mutex_t *thought_count_mutex;
+	pthread_mutex_t *start_time_mutex;
 	pthread_mutex_t *last_meal_mutex;
+	pthread_mutex_t *state_mutex;
 	pthread_mutex_t *print_mutex;
 }	t_philo;
 
@@ -101,9 +101,7 @@ void				thinking(t_philo *philo);
 void				sleeping(t_philo *philo);
 void				eating(t_philo *philo);
 void    			start_simulation(t_data *data);
-int					set_philo_state(t_philo *philo, e_state state);
 int 				is_dead(t_philo *philo);
-int 				is_everyone_full(t_data *data);
 void				print_msg(t_philo *philo, int state);
 void				print_eat_count(t_philo *philo);
 void				clean_datas(t_data *data);
@@ -125,5 +123,23 @@ int					is_simulation_over(t_philo *p);
 int 				is_infinite_meals(t_data *data);
 void				init_philo_mutexes(t_philo *philo);
 void				free_philo_mutexes(t_philo *philo);
+
+e_state				get_state(t_philo *philo);
+int					get_philo_eat_count(t_philo *philo);
+int					is_full(t_philo *philo);
+int					get_thought_count(t_philo *philo);
+long				get_start_time(t_philo *philo);
+long				get_last_meal(t_philo *philo);
+void	add_meal_count(t_philo *philo);
+void	add_thought_count(t_philo *philo);
+void	minus_thought_count(t_philo *philo);
+void	set_philo_is_full(t_philo *philo);
+void	init_philo_state(t_philo *philo, e_state state);
+void	set_philo_state(t_philo *philo, e_state state);
+int 	get_is_full(t_philo *philo);
+void init_philo_mutexes(t_philo *philo);
+void	set_one_dead(t_data *data);
+void	set_last_meal(t_philo *philo);
+void	set_start_time(t_philo *philo);
 
 #endif

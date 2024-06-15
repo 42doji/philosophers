@@ -5,12 +5,13 @@ void	free_forks(t_data *data, int i);
 void	clean_datas(t_data *data);
 int 	init_philos(t_data *data);
 
-void clean_philos(t_data *data)
+
+void	clean_philos(t_data *data)
 {
 	int i;
 
 	if (!data)
-		return ;
+		return;
 	i = 0;
 	while (i < data->nb_phil)
 	{
@@ -50,6 +51,7 @@ int init_philos(t_data *data)
 		data->phils[i].data = data;
 		data->phils[i].is_full = 0;
 		data->phils[i].thought_count = 0;
+		data->phils[i].start_time = 0;
 		init_philo_mutexes(&data->phils[i]);
 		i++;
 	}
@@ -72,12 +74,14 @@ int init_datas(t_data *data)
 		return (0);
 	if (!init_forks(data))
 		return (error_handler(data, MALLOC_ERROR));
-	if (!init_philos(data)) {
+	if (!init_philos(data))
+	{
 		free_forks(data, data->nb_phil - 1);
 		free(data->forks);
 		return (error_handler(data, MALLOC_ERROR));
 	}
 	init_data_mutexes(data);
+	init_philo_mutexes(data->phils);
 	init_data_attr(data);
 	return (1);
 }

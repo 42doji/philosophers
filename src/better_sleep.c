@@ -2,13 +2,14 @@
 
 void	better_sleep(long time);
 
-void	better_sleep(long time)
+void better_sleep(long sleep_time)
 {
-	long	start;
+	long start_time;
 
-	if (time <= 0)
-		return ;
-	start = get_time();
-	while (get_time() - start < time)
-		usleep(100);
+	start_time = get_time();
+	while ((get_time() - start_time) < sleep_time)
+	{
+		printf("get_time() - start_time: %ld\n", get_time() - start_time);
+		usleep(	(sleep_time - (get_time() - start_time)) * 0.5);
+	}
 }
