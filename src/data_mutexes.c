@@ -1,5 +1,10 @@
 #include "../inc/philosophers.h"
 
+void	init_data_mutexes(t_data *data);
+void	free_data_mutexes(t_data *data);
+void	init_philo_mutexes(t_philo *philo);
+void	free_philo_mutexes(t_philo *philo);
+
 void	init_data_mutexes(t_data *data)
 {
 	data->nb_phil_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));

@@ -52,7 +52,7 @@ typedef struct s_philosopher
 	pthread_mutex_t *thought_count_mutex;
 	long 			start_time;
 	pthread_mutex_t *start_time_mutex;
-	long			last_meal;
+	long			last_meal_time;
 	pthread_mutex_t *last_meal_mutex;
 	pthread_mutex_t *print_mutex;
 }	t_philo;

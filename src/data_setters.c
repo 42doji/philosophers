@@ -1,5 +1,8 @@
 #include "../inc/philosophers.h"
 
+void add_full_philo(t_data *data);
+void set_one_dead(t_data *data);
+int is_all_ate(t_data *data);
 
 void add_full_philo(t_data *data)
 {

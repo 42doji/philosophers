@@ -13,7 +13,7 @@ void	dead(t_philo *philo)
 
 int		is_dead(t_philo *philo)
 {
-	if (get_time() - philo->last_meal > get_time_to_die(philo->data))
+	if (get_time() - philo->last_meal_time > get_time_to_die(philo->data))
 	{
 		dead(philo);
 		return (1);
@@ -49,7 +49,7 @@ int set_philo_state(t_philo *p, e_state state)
 	if (state == INACTIVE)
 	{
 		p->start_time = get_time();
-		p->last_meal = p->start_time;
+		p->last_meal_time = p->start_time;
 		p->state = EATING;
 	}
 	else if (state == THINKING)
