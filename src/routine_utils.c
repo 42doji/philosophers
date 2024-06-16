@@ -12,6 +12,8 @@ void	print_eat_count(t_philo *philo)
 
 void print_msg(t_philo *philo, int state)
 {
+	if (is_someone_dead(philo->data))
+		return ;
 	pthread_mutex_lock(philo->data->print_mutex);
 	if (state == EATING)
 		printf("%ld %d is eating\n", get_time() - get_start_time(philo), philo->id);

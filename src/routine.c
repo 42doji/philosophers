@@ -7,6 +7,8 @@ void	*philo_life(void *philo);
 
 void	eating(t_philo *philo)
 {
+	if (is_dead(philo))
+		return ;
 	print_msg(philo, EATING);
 	set_last_meal(philo);
 	add_meal_count(philo);
