@@ -13,31 +13,33 @@ void	eating(t_philo *philo)
 	is_full(philo);
 	better_sleep(get_time_to_eat(philo->data));
 	drop_forks(philo);
+
 	set_philo_state(philo, SLEEPING);
 }
 
 void	sleeping(t_philo *philo)
 {
-	if (philo->thought_count > 0)
-		philo->thought_count = 0;
 	print_msg(philo, SLEEPING);
 	better_sleep(get_time_to_sleep(philo->data));
 	set_philo_state(philo, THINKING);
+
 }
 
 void	thinking(t_philo *philo)
 {
-	if (get_thought_count(philo) == 1)
+	if (philo->thought_count == 0)
 	{
-		set_philo_state(philo, EATING);
-		minus_thought_count(philo);
+		print_msg(philo, THINKING);
+		philo->thought_count = 1;
 		usleep(100);
 	}
-	else if (philo->thought_count == 0)
+	else
 	{
-		add_thought_count(philo);
-		print_msg(philo, THINKING);
-		set_philo_state(philo, THINKING);
+		if (take_forks(philo) == 1)
+		{
+			set_philo_state(philo, EATING);
+			eating(philo);
+		}
 	}
 }
 
@@ -66,14 +68,14 @@ void	*philo_life1(void *philo)
 	init_philo_state(p, INACTIVE);
 	while (!is_simulation_over1(p))
 	{
+		if (is_dead(p) || get_state(p) == FULL)
+			break ;
 		if (get_state(p) == EATING)
 		{
-			if (is_dead(p) || get_state(p) == FULL)
-				break ;
 			if (take_forks(p))
 				eating(p);
 		}
-		else
+		else if (get_state(p) == THINKING)
 			thinking(p);
 		if (get_state(p) == SLEEPING)
 			sleeping(p);
@@ -90,10 +92,10 @@ void	*philo_life2(void *philo)
 	init_philo_state(p, INACTIVE);
 	while (!is_simulation_over2(p))
 	{
+		if (is_dead(p) || get_state(p) == FULL)
+			break ;
 		if (get_state(p) == EATING)
 		{
-			if (is_dead(p) || get_state(p) == FULL)
-				break ;
 			if (take_forks(p))
 				eating(p);
 			if (is_full(p))

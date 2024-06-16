@@ -48,13 +48,6 @@ typedef struct s_philosopher
 	int 			thought_count;
 	long 			start_time;
 	long			last_meal_time;
-	pthread_mutex_t *meal_count_mutex;
-	pthread_mutex_t *is_full_mutex;
-	pthread_mutex_t *thought_count_mutex;
-	pthread_mutex_t *start_time_mutex;
-	pthread_mutex_t *last_meal_mutex;
-	pthread_mutex_t *state_mutex;
-	pthread_mutex_t *print_mutex;
 }	t_philo;
 
 typedef struct s_data
@@ -62,22 +55,23 @@ typedef struct s_data
 	t_philo			*phils;
 	t_fork			*forks;
 	int				nb_phil;
-	pthread_mutex_t *nb_phil_mutex;
 	int				time_to_die;
-	pthread_mutex_t *time_to_die_mutex;
+
 	int				time_to_eat;
-	pthread_mutex_t *time_to_eat_mutex;
 	int				time_to_sleep;
-	pthread_mutex_t *time_to_sleep_mutex;
 	int				meal_count;
-	pthread_mutex_t *meal_count_mutex;
 	int 			fulled_philo_count;
-	pthread_mutex_t *all_ate_mutex;
 	int 			everyone_ate;
-	pthread_mutex_t	*everyone_ate_mtx;
 	int 			someone_is_dead;
 	pthread_mutex_t	*dead_mutex;
 	pthread_mutex_t *print_mutex;
+	pthread_mutex_t *nb_phil_mutex;
+	pthread_mutex_t	*everyone_ate_mtx;
+	pthread_mutex_t *all_ate_mutex;
+	pthread_mutex_t *meal_count_mutex;
+	pthread_mutex_t *time_to_sleep_mutex;
+	pthread_mutex_t *time_to_eat_mutex;
+	pthread_mutex_t *time_to_die_mutex;
 }	t_data;
 
 int					parser(int argc, char *argv[], t_data *data);

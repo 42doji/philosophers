@@ -69,7 +69,6 @@ int is_someone_dead(t_data *data)
 {
 	int someone_is_dead;
 
-	someone_is_dead = 0;
 	pthread_mutex_lock(data->dead_mutex);
 	someone_is_dead = data->someone_is_dead;
 	pthread_mutex_unlock(data->dead_mutex);

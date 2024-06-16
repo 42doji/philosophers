@@ -12,6 +12,7 @@ void	dead(t_philo *philo)
 
 int		is_dead(t_philo *philo)
 {
+
 	if (get_time() - get_last_meal(philo) > get_time_to_die(philo->data))
 	{
 		dead(philo);

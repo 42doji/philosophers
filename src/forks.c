@@ -76,8 +76,6 @@ int drop_forks(t_philo *philo)
 	first_fork = get_first_fork(philo);
 	second_fork = get_second_fork(philo);
 	pthread_mutex_unlock(&second_fork->mutex);
-	print_msg(philo, FORK_DROPPED);
 	pthread_mutex_unlock(&first_fork->mutex);
-	print_msg(philo, FORK_DROPPED);
 	return 1;
 }

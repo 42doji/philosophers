@@ -8,17 +8,6 @@ int 	init_philos(t_data *data);
 
 void	clean_philos(t_data *data)
 {
-	int i;
-
-	if (!data)
-		return;
-	i = 0;
-	while (i < data->nb_phil)
-	{
-		printf("clean_philos\n");
-		free_philo_mutexes(&data->phils[i]);
-		i++;
-	}
 	free(data->phils);
 	data->phils = NULL;
 }
@@ -39,7 +28,6 @@ int init_philos(t_data *data)
 	if (!data->phils)
 		return (0);
 	i = 0;
-	set_philo_mutexes(data);
 	while (i < data->nb_phil)
 	{
 		data->phils[i].id = i + 1;
@@ -75,7 +63,6 @@ int init_datas(t_data *data)
 		return (error_handler(data, MALLOC_ERROR));
 	}
 	init_data_mutexes(data);
-	set_philo_mutexes(data);
 	init_data_attr(data);
 	return (1);
 }
