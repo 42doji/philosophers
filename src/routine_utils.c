@@ -23,7 +23,5 @@ void print_msg(t_philo *philo, int state)
 		printf("%ld %d died\n", get_time() - get_start_time(philo), philo->id);
 	else if (state == FORK_TAKEN)
 		printf("%ld %d has taken a fork\n", get_time() - get_start_time(philo), philo->id);
-	else if (state == FORK_DROPPED)
-		printf("%ld %d has dropped a fork\n", get_time() - get_start_time(philo), philo->id);
 	pthread_mutex_unlock(philo->data->print_mutex);
 }
