@@ -22,12 +22,6 @@ void    start_simulation1(t_data *data)
 			pthread_create(&data->phils[i].thread, NULL, philo_life1, &data->phils[i]);
 			i++;
 		}
-		i = 0;
-		while (i < data->nb_phil)
-		{
-			pthread_join(data->phils[i].thread, NULL);
-			i++;
-		}
 	}
 }
 
@@ -72,6 +66,8 @@ int		parser(int argc, char *argv[], t_data *data)
 	printf("time_to_sleep: %d\n", data->time_to_sleep);
 	data->meal_count = -1;
 	data->fulled_philo_count = 0;
+	data->everyone_ate = 0;
+	data->someone_is_dead = 0;
 	if (argc == 6)
 	{
 		data->meal_count = ft_atoi(argv[5]);

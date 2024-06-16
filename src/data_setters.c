@@ -18,6 +18,16 @@ void set_one_dead(t_data *data)
 	pthread_mutex_unlock(data->dead_mutex);
 }
 
+int	is_everyone_ate(t_data *data)
+{
+	int	res;
+	
+	pthread_mutex_lock(data->everyone_ate_mtx);
+	res = data->everyone_ate;
+	pthread_mutex_unlock(data->everyone_ate_mtx);
+	return (res);
+}
+
 int is_all_ate(t_data *data)
 {
 	int	ate_phils;

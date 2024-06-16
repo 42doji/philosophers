@@ -8,6 +8,7 @@ void	dead(t_philo *philo)
 	print_msg(philo, DEAD);
 	set_philo_state(philo, DEAD);
 	set_one_dead(philo->data);
+	philo->is_dead = 1;
 }
 
 int		is_dead(t_philo *philo)

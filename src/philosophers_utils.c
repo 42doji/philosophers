@@ -39,6 +39,7 @@ int init_philos(t_data *data)
 		data->phils[i].is_full = 0;
 		data->phils[i].thought_count = 0;
 		data->phils[i].start_time = 0;
+		data->phils[i].is_dead = 0;
 		i++;
 	}
 	return (1);

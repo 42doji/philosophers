@@ -45,6 +45,7 @@ typedef struct s_philosopher
 	t_fork			*second_fork;
 	int				meal_count;
 	int 			is_full;
+	int				is_dead;
 	int 			thought_count;
 	long 			start_time;
 	long			last_meal_time;
@@ -56,7 +57,6 @@ typedef struct s_data
 	t_fork			*forks;
 	int				nb_phil;
 	int				time_to_die;
-
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				meal_count;
@@ -120,26 +120,24 @@ int					is_simulation_over2(t_philo *p);
 int 				is_infinite_meals(t_data *data);
 void				init_philo_mutexes(t_philo *p);
 void				free_philo_mutexes(t_philo *philo);
-
 e_state				get_state(t_philo *philo);
 int					get_philo_eat_count(t_philo *philo);
 int					is_full(t_philo *philo);
 int					get_thought_count(t_philo *philo);
 long				get_start_time(t_philo *philo);
 long				get_last_meal(t_philo *philo);
-void	add_meal_count(t_philo *philo);
-void	add_thought_count(t_philo *philo);
-void	minus_thought_count(t_philo *philo);
-void	set_philo_is_full(t_philo *philo);
-void	init_philo_state(t_philo *philo, e_state state);
-void	set_philo_state(t_philo *philo, e_state state);
-int 	get_is_full(t_philo *philo);
-void init_philo_mutexes(t_philo *p);
-void	set_one_dead(t_data *data);
-void	set_last_meal(t_philo *philo);
-void	set_start_time(t_philo *philo);
-void	allocate_philo_mutexes(t_philo *philo);
-void set_philo_mutexes(t_data *data);
-
-
+void				add_meal_count(t_philo *philo);
+void				add_thought_count(t_philo *philo);
+void				minus_thought_count(t_philo *philo);
+void				set_philo_is_full(t_philo *philo);
+void				init_philo_state(t_philo *philo, e_state state);
+void				set_philo_state(t_philo *philo, e_state state);
+int 				get_is_full(t_philo *philo);
+void 				init_philo_mutexes(t_philo *p);
+void				set_one_dead(t_data *data);
+void				set_last_meal(t_philo *philo);
+void				set_start_time(t_philo *philo);
+void				allocate_philo_mutexes(t_philo *philo);
+void 				set_philo_mutexes(t_data *data);
+int					is_everyone_ate(t_data *data);
 #endif

@@ -2,7 +2,7 @@
 
 void	better_sleep(long time);
 
-void better_sleep(long milliseconds)
+void	better_sleep(long milliseconds)
 {
 	struct timeval	tv;
 	long			start_time;

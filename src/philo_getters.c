@@ -47,6 +47,7 @@ int is_full(t_philo *philo)
 	{
 		set_philo_is_full(philo);
 		set_philo_state(philo, FULL);
+		is_all_ate(philo->data);
 	}
 	return (get_is_full(philo));
 }
