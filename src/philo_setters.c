@@ -50,8 +50,8 @@ void	init_philo_state(t_philo *philo, e_state state)
 	if (state == INACTIVE)
 	{
 		set_start_time(philo);
-		set_last_meal(philo);
 		set_philo_state(philo, EATING);
+		set_last_meal(philo);
 	}
 	else
 		set_philo_state(philo, state);

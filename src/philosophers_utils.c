@@ -40,16 +40,12 @@ int init_philos(t_data *data)
 		data->phils[i].thought_count = 0;
 		data->phils[i].start_time = 0;
 		data->phils[i].is_dead = 0;
+		data->phils[i].last_meal_time = 0;
 		i++;
 	}
 	return (1);
 }
 
-void	init_data_attr(t_data *data)
-{
-	data->fulled_philo_count = 0;
-	data->someone_is_dead = 0;
-}
 
 int init_datas(t_data *data)
 {

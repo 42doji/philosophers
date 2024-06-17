@@ -1,10 +1,11 @@
 #include "../inc/philosophers.h"
 
-void	start_simulation1(t_data *data);
-void	start_simulation2(t_data *data);
+void	init_data_attr(t_data *data);
+void	infinite_simulation(t_data *data);
+void	finite_simulation(t_data *data);
 int		parser(int argc, char *argv[], t_data *data);
 
-void    start_simulation1(t_data *data)
+void    infinite_simulation(t_data *data)
 {
 	int i;
 
@@ -19,13 +20,13 @@ void    start_simulation1(t_data *data)
 	{
 		while (i < data->nb_phil)
 		{
-			pthread_create(&data->phils[i].thread, NULL, philo_life1, &data->phils[i]);
+			pthread_create(&data->phils[i].thread, NULL, infinite_routine, &data->phils[i]);
 			i++;
 		}
 	}
 }
 
-void    start_simulation2(t_data *data)
+void    finite_simulation(t_data *data)
 {
 	int i;
 
@@ -40,7 +41,7 @@ void    start_simulation2(t_data *data)
 	{
 		while (i < data->nb_phil)
 		{
-			pthread_create(&data->phils[i].thread, NULL, philo_life2, &data->phils[i]);
+			pthread_create(&data->phils[i].thread, NULL, finite_routine, &data->phils[i]);
 			i++;
 		}
 		i = 0;
@@ -64,10 +65,6 @@ int		parser(int argc, char *argv[], t_data *data)
 	printf("time_to_eat: %d\n", data->time_to_eat);
 	data->time_to_sleep = ft_atoi(argv[4]);
 	printf("time_to_sleep: %d\n", data->time_to_sleep);
-	data->meal_count = -1;
-	data->fulled_philo_count = 0;
-	data->everyone_ate = 0;
-	data->someone_is_dead = 0;
 	if (argc == 6)
 	{
 		data->meal_count = ft_atoi(argv[5]);
@@ -75,5 +72,15 @@ int		parser(int argc, char *argv[], t_data *data)
 	}
 	else
 		data->meal_count = -1;
+	init_data_attr(data);
 	return (1);
+}
+
+void	init_data_attr(t_data *data)
+{
+	data->fulled_philo_count = 0;
+	data->someone_is_dead = 0;
+	data->fulled_philo_count = 0;
+	data->everyone_ate = 0;
+	data->someone_is_dead = 0;
 }

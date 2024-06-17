@@ -1,11 +1,10 @@
 #include "../inc/philosophers.h"
 
-int init_forks(t_data *data);
+int		init_forks(t_data *data);
+int		take_forks(t_philo *philo);
+int		drop_forks(t_philo *philo);
 t_fork	*get_first_fork(t_philo *philo);
 t_fork	*get_second_fork(t_philo *philo);
-int take_forks(t_philo *philo);
-int drop_forks(t_philo *philo);
-
 
 int init_forks(t_data *data)
 {
@@ -15,7 +14,7 @@ int init_forks(t_data *data)
 		return error_handler(data, ARG_ERROR);
 	data->forks = (t_fork *)malloc(sizeof(t_fork) * data->nb_phil);
 	if (!data->forks)
-		error_handler(data, MALLOC_ERROR);
+		return error_handler(data, MALLOC_ERROR);
 	i = 0;
 	while (i < data->nb_phil)
 	{
@@ -23,7 +22,7 @@ int init_forks(t_data *data)
 		if (pthread_mutex_init(&data->forks[i].mutex, NULL))
 		{
 			free_forks(data, i - 1);
-			break;
+			return error_handler(data, MUTEX_ERROR);
 		}
 		i++;
 	}
@@ -41,7 +40,7 @@ t_fork *get_second_fork(t_philo *philo)
 {
 	if (philo->first_fork->id < philo->second_fork->id)
 		return philo->second_fork;
-	return (philo->first_fork);
+	return philo->first_fork;
 }
 
 int take_forks(t_philo *philo)

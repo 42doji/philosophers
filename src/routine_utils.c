@@ -12,7 +12,7 @@ void	print_eat_count(t_philo *philo)
 
 void print_msg(t_philo *philo, int state)
 {
-	if (is_someone_dead(philo->data))
+	if (is_someone_dead(philo->data) || philo->is_dead == 1)
 		return ;
 	pthread_mutex_lock(philo->data->print_mutex);
 	if (state == EATING)

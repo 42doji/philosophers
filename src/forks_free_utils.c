@@ -3,21 +3,23 @@
 void	clean_forks(t_data *data);
 void	free_forks(t_data *data, int i);
 
-void	clean_forks(t_data *data)
-{
-	int i;
+void	clean_forks(t_data *data);
+void	free_forks(t_data *data, int i);
 
-	if (!data)
-		return ;
+void clean_forks(t_data *data)
+{
+	int	i;
+
+	if (!data || !data->forks)
+		return;
 	i = 0;
 	while (i < data->nb_phil)
 	{
-		data->forks[i].id = -1;
-		pthread_mutex_destroy(&data->forks[i].mutex);
+		if (pthread_mutex_destroy(&data->forks[i].mutex) != 0)
+			fprintf(stderr, "Failed to destroy mutex %d\n", i);
 		i++;
 	}
 	free(data->forks);
-	data->forks = NULL;
 }
 
 void	free_forks(t_data *data, int i)
@@ -26,7 +28,8 @@ void	free_forks(t_data *data, int i)
 		return ;
 	while (i >= 0)
 	{
-		pthread_mutex_destroy(&data->forks[i].mutex);
+		if (pthread_mutex_destroy(&data->forks[i].mutex) != 0)
+			fprintf(stderr, "Failed to destroy mutex %d\n", i);
 		data->forks[i].id = -1;
 		i--;
 	}

@@ -5,7 +5,6 @@ int get_time_to_die(t_data *data);
 int get_time_to_eat(t_data *data);
 int get_time_to_sleep(t_data *data);
 int get_meal_count(t_data *data);
-int is_someone_dead(t_data *data);
 int is_infinite_meals(t_data *data);
 
 
@@ -65,15 +64,7 @@ int get_meal_count(t_data *data)
 }
 
 
-int is_someone_dead(t_data *data)
-{
-	int someone_is_dead;
 
-	pthread_mutex_lock(data->dead_mutex);
-	someone_is_dead = data->someone_is_dead;
-	pthread_mutex_unlock(data->dead_mutex);
-	return (someone_is_dead);
-}
 
 int is_infinite_meals(t_data *data)
 {
