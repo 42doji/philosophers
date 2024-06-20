@@ -45,7 +45,7 @@ void	error_handler(t_error *error, char *msg, int exit_status)
 	}
 }
 
-void	create_threads(t_philo *philo)
+void	join_threads(t_philo *philo)
 {
 	t_philo	*tmp;
 	t_philo	*prev;

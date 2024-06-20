@@ -12,7 +12,7 @@
 
 #include "philosophers.h"
 
-void	init_philos(t_philo *p, t_philo *head)
+void	monitor(t_philo *p, t_philo *head)
 {
 	bool	status;
 

@@ -70,8 +70,8 @@ typedef struct s_philo
 
 void				error_handler(t_error *error, char *msg, int exit_status);
 t_philo				*parser(int argc, char **argv);
-void				init_philos(t_philo *p, t_philo *head);
-void				create_threads(t_philo *philo);
+void				monitor(t_philo *p, t_philo *head);
+void				join_threads(t_philo *philo);
 int					sleeping(long long time, t_philo *philos);
 void				*routine(void *philo);
 int					actions(t_philo *philos, char *action);
