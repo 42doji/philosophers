@@ -1,54 +1,29 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: doji <doji@student.42gyeongsan.kr>         +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/06/20 21:08:30 by doji              #+#    #+#              #
-#    Updated: 2024/06/20 21:08:30 by doji             ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+SRC_DIR = src
+SRC = src/parser.c src/utils.c src/philosophers.c src/actions.c src/handlers.c src/main.c
 
-NAME = philo
-HEADER = ./include/philosophers.h
-SRC_DIR = ./src
-SRC = $(SRC_DIR)/main.c \
-        $(SRC_DIR)/time.c \
-        $(SRC_DIR)/error_and_free.c \
-        $(SRC_DIR)/initializer.c \
-        $(SRC_DIR)/utils.c \
-        $(SRC_DIR)/routine.c \
-        $(SRC_DIR)/philo_routine.c \
-        $(SRC_DIR)/eating.c \
-        $(SRC_DIR)/sleeping.c \
-        $(SRC_DIR)/eating_utils.c \
-        $(SRC_DIR)/routine_utils.c \
-
-OBJ_DIR = ./obj
-$(shell mkdir -p $(OBJ_DIR))
-
-OBJ = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC))
+OBJ = $(SRC:.c=.o)
 
 CC = cc
-CFLAG = -Wall -Werror -Wextra -g
 
-all: $(NAME)
+CFLAGS = -Wall -Wextra -Werror -I includes -pthread
 
-$(NAME): $(OBJ) $(HEADER)
-	cp $(HEADER) $(OBJ_DIR)
-	$(CC) $(CFLAG) $(OBJ) -lpthread -o $(NAME)
+NAME = philo
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-		mkdir -p $(dir $@)
-		$(CC) $(CFLAG) -c $< -o $@
+all : $(NAME)
 
-clean:
-	rm -rf $(OBJ_DIR)
 
-fclean: clean
-	rm -rf $(NAME)
+$(NAME) : $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 
-re: fclean all
+%.o : %.c includes/philosophers.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
-.PHONY: all clean fclean re
+clean :
+	rm -fr $(OBJ)
+
+fclean : clean
+	rm -fr $(NAME)
+
+re : fclean all
+
+.PHONY : all clean fclean re

@@ -5,94 +5,81 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: doji <doji@student.42gyeongsan.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/20 21:09:12 by doji              #+#    #+#             */
-/*   Updated: 2024/06/20 21:09:13 by doji             ###   ########.fr       */
+/*   Created: 2024/06/20 22:54:24 by doji              #+#    #+#             */
+/*   Updated: 2024/06/20 22:54:26 by doji             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philosophers.h"
+#include "philosophers.h"
 
-void    set_default_data(t_data **data)
+char	*ft_strdup(const char *s)
 {
-	(*data)->start = 0;
-	(*data)->dead = 0;
-	(*data)->finished = 0;
-	(*data)->start_time = 0;
+	char	*ptr;
+	size_t	i;
+	size_t	len;
+
+	len = 0;
+	while (s[len++])
+		;
+	ptr = (char *)malloc(sizeof(char) * (--len + 1));
+	if (!ptr)
+	{
+		return (NULL);
+	}
+	i = 0;
+	while (s[i])
+	{
+		ptr[i] = s[i];
+		i++;
+	}
+	ptr[i] = '\0';
+	return (ptr);
 }
 
-void    set_default_philos(t_philo *philo, t_data **data, int index)
+void	error_handler(t_error *error, char *msg, int exit_status)
 {
-	philo->last_meal = 0;
-	philo->start_time = 0;
-	if (index == (*data)->philo_num - 1)
+	if (error->status == 0)
 	{
-		if ((*data)->philo_num - 1 != 0)
-			(*data)->philos[index].right_fork = &(*data)->forks[0];
-		else
-			(*data)->philos[index].right_fork = NULL;
+		error->msg = ft_strdup(msg);
+		error->status = exit_status;
 	}
-	else
-		(*data)->philos[index].right_fork = &(*data)->forks[index + 1];
 }
 
-static void     printing(size_t time, int id, char *string)
+void	create_threads(t_philo *philo)
 {
-	printf("%zu %d %s\n", time, id, string);
+	t_philo	*tmp;
+	t_philo	*prev;
+
+	tmp = philo;
+	while (tmp)
+	{
+		pthread_join(tmp->thread, NULL);
+		tmp = tmp->next;
+	}
+	free(philo->data);
+	tmp = philo;
+	while (tmp)
+	{
+		prev = tmp;
+		free(prev->fork.right);
+		tmp = tmp->next;
+		free(prev);
+	}
 }
 
-int     messages(int status, t_philo **philo)
+long long	get_time(void)
 {
-	size_t  time;
+	struct timeval	tv;
 
-	time = get_current_time() - (*philo)->start_time;
-	if (status == 3)
-	{
-		if ((*philo)->status != -1)
-			return (printing(time, (*philo)->philo_id, "is eating"), 0);
-		else
-			return (1);
-	}
-	else if (status == 4)
-	{
-		pthread_mutex_lock(&(*philo)->lock);
-		if ((*philo)->status != -1)
-		{
-			pthread_mutex_unlock(&(*philo)->lock);
-			return (printing(time, (*philo)->philo_id, "has taken a fork"), 0);
-		}
-		else
-		{
-			pthread_mutex_unlock(&(*philo)->lock);
-			return (1);
-		}
-	}
-	return (0);
+	gettimeofday(&tv, NULL);
+	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
 
-int     ft_atoi(char *nptr, int *nr)
+int	ft_usleep(t_philo *philo)
 {
-	int             sign;
-	long    number;
-
-	number = 0;
-	sign = 1;
-	while ((*nptr >= 9 && *nptr <= 13) || *nptr == 32)
-		nptr++;
-	if (*nptr == '+' || *nptr == '-')
-	{
-		if (*nptr == '-')
-			sign = -1;
-		nptr++;
-	}
-	while (*nptr >= '0' && *nptr <= '9')
-	{
-		number = number * 10 + (*nptr - '0');
-		if (number * sign > INT_MAX || number * sign < INT_MIN)
-			return (1);
-		nptr++;
-	}
-	if (number * sign < 1)
+	if (actions(philo, SLEEPING) == 1)
 		return (1);
-	*nr = (int)(number * sign);
+	if (sleeping(philo->data->time_to_sleep, philo) == 1)
+		return (1);
 	return (0);
 }

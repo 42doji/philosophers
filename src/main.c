@@ -5,35 +5,31 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: doji <doji@student.42gyeongsan.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/20 21:09:00 by doji              #+#    #+#             */
-/*   Updated: 2024/06/20 21:09:02 by doji             ###   ########.fr       */
+/*   Created: 2024/06/20 23:33:30 by doji              #+#    #+#             */
+/*   Updated: 2024/06/20 23:33:32 by doji             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philosophers.h"
+#include "../includes/philosophers.h"
 
-static void clean_all(t_data *data)
+int	main(int ac, char **av)
 {
-	destroy_philo_mutex(data->philos, data->philo_num);
-	destroy_mutexes(data, data->philo_num, 2);
-	free_data(data);
-}
+	t_philo	*philo;
+	t_philo	*tmp;
 
-int     main(int argc, char **argv)
-{
-	t_data  *data;
-
-	if (!(argc == 5 || argc == 6))
-		return (error_handler("Not the right amount of arguments\n", NULL), 1);
-	data = malloc (sizeof(t_data));
-	if (data == NULL)
+	philo = parser(ac, av);
+	if (philo == NULL)
 		return (1);
-	if (init_data(argv, argc == 6, data))
+	tmp = philo;
+	tmp->data->start_time = get_time();
+	while (tmp)
 	{
-		free(data);
-		return (1);
+		if ((pthread_create(&tmp->thread, NULL, &routine, tmp)))
+			break ;
+		tmp = tmp->next;
 	}
-	init_thread(data);
-	clean_all(data);
+	tmp = philo;
+	init_philos(tmp, philo);
+	create_threads(philo);
 	return (0);
 }
