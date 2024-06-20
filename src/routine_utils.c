@@ -3,41 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   routine_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: doji <doji@student.42gyengsan.kr>          +#+  +:+       +#+        */
+/*   By: doji <doji@student.42gyeongsan.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/12 18:21:12 by doji              #+#    #+#             */
-/*   Updated: 2024/06/12 18:21:13 by doji             ###   ########.fr       */
+/*   Created: 2024/06/20 21:09:06 by doji              #+#    #+#             */
+/*   Updated: 2024/06/20 21:09:07 by doji             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/philosophers.h"
 
-void	print_eat_count(t_philo *philo);
-void	print_msg(t_philo *philo, int state);
+#include "../include/philosophers.h"
 
-void	print_eat_count(t_philo *philo)
+void    finished_eating(t_data **data, int *index)
 {
-	pthread_mutex_lock(&philo->data->mutex);
-	printf("%d philo ate %d times\n", philo->id, philo->meal_count);
-	pthread_mutex_unlock(&philo->data->mutex);
-}
+	int     i;
 
-void	print_msg(t_philo *philo, int state)
-{
-	pthread_mutex_lock(&philo->data->mutex);
-	if (state == EATING)
-		printf("%ld %d is eating\n", get_time() - philo->start_time, philo->id);
-	else if (state == SLEEPING)
-		printf("%ld %d is sleeping\n", \
-		get_time() - philo->start_time, philo->id);
-	else if (state == THINKING)
-		printf("%ld %d is thinking\n", \
-		get_time() - philo->start_time, philo->id);
-	else if (state == DEAD)
-		printf("%ld %d died\n", \
-		get_time() - philo->start_time, philo->id);
-	else if (state == FORK_TAKEN)
-		printf("%ld %d has taken a fork\n", \
-		get_time() - philo->start_time, philo->id);
-	pthread_mutex_unlock(&philo->data->mutex);
+	if (!(*data)->dead && *index == (*data)->philo_num - 1)
+	{
+		if ((*data)->finished != (*data)->philo_num)
+			(*data)->finished = 0;
+		*index = -1;
+	}
+	if ((*data)->finished == (*data)->philo_num)
+	{
+		i = 0;
+		while (i < (*data)->philo_num)
+		{
+			pthread_mutex_lock(&(*data)->philos[i].lock);
+			(*data)->philos[i].status = -1;
+			pthread_mutex_unlock(&(*data)->philos[i].lock);
+			i++;
+		}
+	}
 }

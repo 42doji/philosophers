@@ -3,24 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: doji <doji@student.42gyengsan.kr>          +#+  +:+       +#+        */
+/*   By: doji <doji@student.42gyeongsan.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/12 18:21:02 by doji              #+#    #+#             */
-/*   Updated: 2024/06/12 18:21:03 by doji             ###   ########.fr       */
+/*   Created: 2024/06/20 21:09:00 by doji              #+#    #+#             */
+/*   Updated: 2024/06/20 21:09:02 by doji             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/philosophers.h"
+#include "../include/philosophers.h"
 
-int	main(int argc, char *argv[])
+static void clean_all(t_data *data)
 {
-	t_data	data;
+	destroy_philo_mutex(data->philos, data->philo_num);
+	destroy_mutexes(data, data->philo_num, 2);
+	free_data(data);
+}
 
-	if (!parser(argc, argv, &data))
+int     main(int argc, char **argv)
+{
+	t_data  *data;
+
+	if (!(argc == 5 || argc == 6))
+		return (error_handler("Not the right amount of arguments\n", NULL), 1);
+	data = malloc (sizeof(t_data));
+	if (data == NULL)
 		return (1);
-	if (!init_datas(&data))
+	if (init_data(argv, argc == 6, data))
+	{
+		free(data);
 		return (1);
-	start_simulation(&data);
-	clean_datas(&data);
+	}
+	init_thread(data);
+	clean_all(data);
 	return (0);
 }

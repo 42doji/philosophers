@@ -3,105 +3,133 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: doji <doji@student.42gyengsan.kr>          +#+  +:+       +#+        */
+/*   By: doji <doji@student.42gyeongsan.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/12 18:21:09 by doji              #+#    #+#             */
-/*   Updated: 2024/06/12 20:24:52 by doji             ###   ########.fr       */
+/*   Created: 2024/06/20 21:09:05 by doji              #+#    #+#             */
+/*   Updated: 2024/06/20 21:09:05 by doji             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/philosophers.h"
+#include "../include/philosophers.h"
 
-void	eating(t_philo *philo);
-void	sleeping(t_philo *philo);
-void	thinking(t_philo *philo);
-void	*philo_life(void *philo);
-
-void	eating(t_philo *philo)
+static t_data   *set_start(t_data *data)
 {
-	pthread_mutex_lock(&philo->mutex);
-	philo->last_meal = get_time();
-	philo->death_time = philo->last_meal + philo->data->time_to_die;
-	philo->meal_count++;
-	if (philo->meal_count >= philo->data->meal_count)
+	int	index;
+
+	if (!data->start_time)
 	{
-		pthread_mutex_lock(&philo->data->mutex);
-		philo->is_full = 1;
-		pthread_mutex_unlock(&philo->data->mutex);
-		set_philo_state(philo, FULL);
+		data->start_time = get_current_time();
+		index = -1;
+		while (++index < data->philo_num)
+		{
+			pthread_mutex_lock(&data->philos[index].lock);
+			data->philos[index].last_meal = data->start_time;
+			data->philos[index].start_time = data->start_time;
+			data->philos[index].status = 1;
+			pthread_mutex_unlock(&data->philos[index].lock);
+		}
+		return (data);
 	}
-	pthread_mutex_unlock(&philo->mutex);
-	better_sleep(philo->data->time_to_eat);
-	drop_forks(philo);
-	print_msg(philo, EATING);
-	if (philo->meal_count < philo->data->meal_count)
-		set_philo_state(philo, SLEEPING);
+	return (NULL);
 }
 
-void	sleeping(t_philo *philo)
+static int	check_finished(t_data **data, int finished, int number)
 {
-	if (philo->thought_count > 0)
-		philo->thought_count = 0;
-	print_msg(philo, SLEEPING);
-	better_sleep(philo->data->time_to_sleep);
-	set_philo_state(philo, THINKING);
+	int	index;
+
+	if ((*data)->dead || (*data)->finished == (*data)->philo_num)
+	{
+		index = 0;
+		while (index < (*data)->philo_num)
+		{
+			pthread_mutex_lock(&(*data)->philos[index].lock);
+			(*data)->philos[index].status = -1;
+			pthread_mutex_unlock(&(*data)->philos[index].lock);
+			index++;
+		}
+		if (finished == 0)
+		{
+			pthread_mutex_lock(&(*data)->write);
+			printf("%zu %d died\n", get_current_time() - (*data)->start_time,
+				   (*data)->philos[number].philo_id);
+			pthread_mutex_unlock(&(*data)->write);
+		}
+		return (1);
+	}
+	return (0);
 }
 
-void	thinking(t_philo *philo)
+static void	monitoring(t_data **data, int index)
 {
-	if (take_forks(philo))
-	{
-		eating(philo);
-		sleeping(philo);
-	}
-	else if (philo->thought_count == 0)
-	{
-		philo->thought_count++;
-		print_msg(philo, THINKING);
-		set_philo_state(philo, THINKING);
-		better_sleep(1);
-	}
-}
-
-void	philo_idle(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->mutex);
-	philo->data->philo_created++;
-	pthread_mutex_unlock(&philo->mutex);
 	while (1)
 	{
-		if (philo->start_signal)
+		pthread_mutex_lock(&(*data)->philos[index].lock);
+		if ((*data)->philos[index].status == -1)
+			(*data)->dead = 1;
+		pthread_mutex_unlock(&(*data)->philos[index].lock);
+		if ((*data)->dead || (*data)->finished == (*data)->philo_num)
+			if (check_finished(data, (*data)->finished, index))
+				break ;
+		pthread_mutex_lock(&(*data)->philos[index].lock);
+		if ((get_current_time() - (*data)->philos[index].last_meal)
+			>= (*data)->death_time)
+		{
+			(*data)->dead = 1;
+			pthread_mutex_unlock(&(*data)->philos[index].lock);
+			check_finished(data, (*data)->finished, index);
 			break ;
-		usleep(100);
+		}
+		if (!(*data)->dead
+			&& (*data)->philos[index].eat_count >= (*data)->meals_nr)
+			(*data)->finished++;
+		pthread_mutex_unlock(&(*data)->philos[index].lock);
+		finished_eating(&(*data), &index);
+		index++;
 	}
 }
 
-void	*philo_life(void *philo)
+static void	*checker_routine(void *args)
 {
-	t_philo	*p;
+	t_data	*data;
 
-	p = (t_philo *)philo;
-	philo_idle(p);
-	set_philo_state(p, INACTIVE);
-	while (p->data->finished_simulation == 0)
+	data = (t_data *)args;
+	while (1)
 	{
-		if (p->state == DEAD || p->data->everyone_is_full)
-			break ;
-		if (p->state == EATING && take_forks(p))
+		pthread_mutex_lock(&data->lock);
+		if (data->start == 1)
 		{
-			eating(p);
-			sleeping(p);
-		}
-		else
-			set_philo_state(p, THINKING);
-		if (p->state == THINKING)
-			thinking(p);
-		if (p->meal_count >= p->data->meal_count && p->data->meal_count != -1)
-		{
-			set_philo_state(p, FULL);
+			pthread_mutex_unlock(&data->lock);
 			break ;
 		}
+		pthread_mutex_unlock(&data->lock);
+		usleep(500);
 	}
-	print_eat_count(p);
+	data = set_start(data);
+	if (data != NULL)
+		monitoring(&data, 0);
 	return (NULL);
+}
+
+int	init_thread(t_data *data)
+{
+	int	index;
+
+	if (pthread_create(data->supervisor, NULL, checker_routine, data) != 0)
+		return (error_handler("thread create failed", data));
+	index = -1;
+	while (++index < data->philo_num)
+	{
+		if (pthread_create(data->philos[index].thrd, NULL, philo_routine,
+						   &data->philos[index]) != 0)
+			return (error_handler("philo thread create failed", data));
+	}
+	pthread_mutex_lock(&data->lock);
+	data->start = 1;
+	pthread_mutex_unlock(&data->lock);
+	if (pthread_join(*data->supervisor, NULL) != 0)
+		return (error_handler("thread_join", data));
+	index = -1;
+	while (++index < data->philo_num)
+		pthread_join(*data->philos[index].thrd, NULL);
+	return (0);
 }
